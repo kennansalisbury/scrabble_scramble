@@ -1,0 +1,149 @@
+* {
+    margin: 0;
+    padding: 0;
+  }  
+
+header {
+    width: 100vw;
+    height: 10vh;
+    background: whitesmoke;
+    border: 1px solid gray;
+    text-align: center;
+}
+
+#quit-btn {
+    text-align: left;
+    margin: 3vh 0 0 5vw;
+}
+
+#game-name {
+
+}
+
+h1 {
+   margin: 0;
+   font-size: 40px;
+   display: inline-block;
+}
+
+main {
+    width: 100vw;
+
+}
+
+#message-and-gameboard {
+    padding: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+#messageboard {
+    height: 400px;
+    width: 50vw;
+    margin: 10px 20px;
+    background: whitesmoke;
+}
+
+#playerboard {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+#gameboard div img {
+    height: 100%;
+    width: 100%;
+}
+
+#gameboard {
+    width: 400px;
+    height: 400px;
+    display: grid;
+    grid-template-rows: 20% 20% 20% 20% 20%;
+    grid-template-columns: 20% 20% 20% 20% 20%;  
+    grid-template-areas: 1a 1b 1c 1d 1e
+                         2a 2b 2c 2d 2e
+                         3a 3b 3c 3d 3e
+                         4a 4b 4c 4d 4e
+                         5a 5b 5c 5d 5e;
+}
+
+#1a {
+    grid-area: 1a
+}
+#1b {
+    grid-area: 1b
+}
+#1c {
+    grid-area: 1c
+}
+#1d {
+    grid-area: 1d
+}
+#1e {
+    grid-area: 1e
+}
+#2a {
+    grid-area: 2a
+}
+#2b {
+    grid-area: 2b
+}
+#2c {
+    grid-area: 2c
+}
+#2d {
+    grid-area: 2d
+}
+#2e {
+    grid-area: 2e
+}
+#3a {
+    grid-area: 3a
+}
+#3b {
+    grid-area: 3b
+}
+#3c {
+    grid-area: 3c
+}
+#3d {
+    grid-area: 3d
+}
+#3e {
+    grid-area: 3e
+}
+#4a {
+    grid-area: 4a
+}
+#4b {
+    grid-area: 4b
+}
+#4c {
+    grid-area: 4c
+}
+#4d {
+    grid-area: 4d
+}
+#4e {
+    grid-area: 4e
+}
+#5a {
+    grid-area: 5a
+}
+#5b {
+    grid-area: 5b
+}
+#5c {
+    grid-area: 5c
+}
+#5d {
+    grid-area: 5d
+}
+#5e {
+    grid-area: 5e
+}
+
