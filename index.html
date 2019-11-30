@@ -13,7 +13,7 @@
     <header>
         <div class="row">
             <div class="col s2 m2 l2">
-                <button id="quit-btn">Quit Game</button>
+                <button id="quit-btn" class="hidden">Quit Game</button>
             </div>
             <h1 id="game-name" class="col s8 m8 l8">SCRAMBBLE</h1>
         </div>
@@ -21,8 +21,16 @@
     
     <main>
         <section id="message-and-gameboard">
+                    
             <div id="messageboard">
-                <h1>Messages Go Here</h1>
+                <h1>Welcome to Scrambble</h1>
+                <p>It's a Scrabble Scramble!</p>
+                <br>
+                <p>In this 2-player game, you’ll each have 1 chance to play a word based on the tiles you are given. Whoever has the highest score, wins! </p> 
+                <br>
+                <p>Click below to begin.</p>
+                <br>
+                <button id="start-btn">Start Game</button>
             </div>
             <div id="gameboard">
                 <div id="1a" class="square">
@@ -108,14 +116,20 @@
         </section>
 
         <section id="playerboard" class="row">
-            <div class="col s12 m3 l3 center-align">
-                <h3>Player</h3>
+            <div id="scoreboard" class="col s12 m3 l3 center-align hidden">
+                <h3>Player 1</h3>
             </div>
-            <div class="col s12 m6 l6 center-align">
-                <h3>Tiles</h3>
+            <div id="tileboard" class="col s12 m6 l6 center-align hidden">
+                <img id="tile0">
+                <img id="tile1">
+                <img id="tile2">
+                <img id="tile3">
+                <img id="tile4">
             </div>
-            <div class="col s12 m3 l3 center-align">
-                <h3>Buttons</h3>
+            <div id="game-btns" class="col s12 m3 l3 center-align hidden">
+                <button id="play-btn">Play</button>
+                <button id="recall-btn">Recall</button>
+                <button id="pass-btn">Pass</button>
             </div>
         </section>
 
@@ -125,6 +139,9 @@
         <p>Made by KS</p>
     </footer>
 
+    <script src="./js/globals.js"></script>
+    <script src="./js/messages.js"></script>
+    <script src="./js/functions.js"></script>
     <script src="./js/main.js"></script>
 </body>
 </html>
