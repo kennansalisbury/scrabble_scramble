@@ -128,15 +128,13 @@ const playTiles = () => {
 
     //fetch dictionary api with url
 
-    //if true - move on to correctWord scenario/function
+    //FOR TESTING ONLY, real API below commented out
 
-    if (fetchAPI('true') === true) {
-        correctWord()
-    }
-    //if false - move on to incorrectWord scenario/function
-    else {
-        incorrectWord()
-    }
+
+    fetchAPI(`https://dictionaryapi.com/api/v3/references/collegiate/json/cry?key=7cb66aa0-7487-4666-92aa-393636fd82d9`)
+
+    // fetchAPI('https://pokeapi.co/api/v2/pokemon/ditto/')
+    console.log('waiting on data')
 }
 
 const correctWord = () => {

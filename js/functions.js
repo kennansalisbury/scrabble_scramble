@@ -177,18 +177,43 @@ const dragDropSetup = () => {
     document.getElementById('3e').setAttribute('ondragleave', 'dragLeave(event)')
 }
 
-const fetchAPI = url => {
+//FOR TESTING ONLY, real API fetch below commented out
+
+// const fetchAPI = (url) => {
+    
+//     fetch(url)
+//     .then(response => response.json()) //translates JSON into javascript object
+//     .then(data => {
+
+//      if(data) {  //if fetch returns data
+//         correctWord()
+//        }
+//        else {  //else it is false and should move to incorrect word 
+//         incorrectWord()
+//        }
+//     })
+//     .catch(err => {
+//         console.log('error', err)
+//         //error message
+//     })
+// }
+
+
+const fetchAPI = (url) => {
     
     fetch(url)
-    .then()
-    //if fetch does not return data, return false
-    
-    if (!data) {
-        return false
-    }
-    //if fetch returns data, return true
-    else {
-        return true
-    }
+    .then(response => response.json()) //translates JSON into javascript object
+    .then(data => {
 
+     if(data[0].meta) {  //if fetch returns an array whose first index is an object called meta, it's true and should move to correctword function
+        correctWord()
+       }
+       else {  //else it is false and should move to incorrect word (if not a word, data comes back just 1 single array of words that are similar to the input word)
+        incorrectWord()
+       }
+    })
+    .catch(err => {
+        console.log('error', err)
+        //error message
+    })
 }
