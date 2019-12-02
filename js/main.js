@@ -52,14 +52,14 @@ const playerTurn = () => {
     updateMessage(playerPlayMessage)
 
     //highlight the middle squares on board
-    document.getElementById('3a').setAttribute('class', 'highlight-square')
-    document.getElementById('3b').setAttribute('class', 'highlight-square')
-    document.getElementById('3c').setAttribute('class', 'highlight-square')
-    document.getElementById('3d').setAttribute('class', 'highlight-square')
-    document.getElementById('3e').setAttribute('class', 'highlight-square')
+    document.getElementById('3a').style.border = "1px solid #E14658"
+    document.getElementById('3b').style.border = "1px solid #E14658"
+    document.getElementById('3c').style.border = "1px solid #E14658"
+    document.getElementById('3d').style.border = "1px solid #E14658"
+    document.getElementById('3e').style.border = "1px solid #E14658"
 
     //dragDropSetup()
-    
+    dragDropSetup()
 }
 
 const confirmPass = () => {
