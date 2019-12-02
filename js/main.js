@@ -1,48 +1,230 @@
 
-
-// Set event listener on start button to start game
 const startGame = () => {
 
+    //show header
+    showHideElement(document.querySelector('header'), 'show')
+
     //show quit button
-    showHideElement(QUIT_BUTTON, 'show')
-    
-    //show scoreboard
-    showHideElement(SCORE_BOARD, 'show')
+    QUIT_BUTTON.setAttribute('class', 'smallbutton')
 
     //show empty tile board
     showHideElement(TILE_BOARD, 'show')
 
     //update messageboard to "player 1 up" message and "draw tiles" button 
-    updateMessage(playerReady)
+    addCurrentPlayer(currentPlayer)
+    updateMessage(playerReadyMessage, playerReadyButton)
+    MESSAGE_BOARD.style.background = '#EFEFEF'
+    MESSAGE_BOARD.style.color = 'black'
 
-    //show buttons
-    showHideElement(GAME_BUTTONS, 'show')
-
-    //choose 5 random tiles
+    //choose 5 random tiles  
     randomTiles()
-    console.log(playerTiles)
+    
+    //add tile images to tileboard (hidden)
+    createPlayerTiles()
 
     //add event listener to player ready button
     document.getElementById('player-ready-btn').addEventListener('click', playerTurn)
 }
 
+// Set event listener on start button to start game
 document.getElementById('start-btn').addEventListener('click', startGame)
 
 const playerTurn = () => {
-    //show 5 tiles on tile board
+    //if tiles on board
+        //resetTiles()
+    
+    //show tiles
     showTiles()
-
-    //update message
-    updateMessage(playerPlay)
+    
+    //show buttons
+    showHideElement(GAME_BUTTONS, 'show')
 
     //add click event listeners to game buttons
+    addGameButtonEventListeners()
 
-    //highlight 5 middle squares on board
+    //show scoreboard w/ currentPlayer
+    showHideElement(SCORE_BOARD, 'show')
+    document.getElementById(`p${currentPlayer}-scoreboard`).textContent = `> Player ${currentPlayer}`
+    document.getElementById(`p${currentPlayer}-scoreboard`).style.color = "#E14658"
 
-    //add click event listeners to highlighted game squares
+    //update message
+    addCurrentPlayer(currentPlayer)
+    updateMessage(playerPlayMessage)
+
+    //highlight the middle squares on board
+    document.getElementById('3a').setAttribute('class', 'highlight-square')
+    document.getElementById('3b').setAttribute('class', 'highlight-square')
+    document.getElementById('3c').setAttribute('class', 'highlight-square')
+    document.getElementById('3d').setAttribute('class', 'highlight-square')
+    document.getElementById('3e').setAttribute('class', 'highlight-square')
+
+    //dragDropSetup()
+    
+}
+
+const confirmPass = () => {
+    //update messageboard with confirmPass message and add confirm button
+    addCurrentPlayer(currentPlayer)
+    updateMessage(confirmPassMessage, yesNoButtons)
+    
+    //remove click event listeners from game buttons
+    removeGameButtonEventListeners()
+
+    //remove click styling on buttons
+
+    //add event listeners to confirm button, on click playerTurn
+    document.getElementById('yes').addEventListener('click', () => {
+        if (currentPlayer === 1) {
+            nextPlayerScreen()
+        }
+        else {
+            showResults()
+        }
+    })
+
+    //add event listener to no button 
+    document.getElementById('no').addEventListener('click', () => {
+        
+        recallTiles()
+        
+        addCurrentPlayer(currentPlayer)
+        updateMessage(playerPlayMessage)
+        addGameButtonEventListeners()
+    })
+
+    console.log(`Player ${currentPlayer}`)
+}
+
+const confirmPlay = () => {
+    //remove game button event listeners
+    removeGameButtonEventListeners()
+    
+    //update messageboard with confirmPlay message and add confirm button and nevermind button
+    addCurrentPlayer(currentPlayer)
+    updateMessage(confirmPlayMessage, yesNoButtons)
+
+    //add event listeners to confirm button, on click playTiles
+    document.getElementById('yes').addEventListener('click', playTiles)
+
+    //add event listener to nevermind button, on click 
+    document.getElementById('no').addEventListener('click', () => {
+        recallTiles()
+        
+        addCurrentPlayer(currentPlayer)
+        updateMessage(playerPlayMessage)
+        addGameButtonEventListeners()
+    })
 
 }
 
-// add click event listener to "Player x ready"
+const playTiles = () => {
+    console.log('play tiles')
+
+    //MVP - push from left to right the object data that is in each square to an array - array should be global and specific to player 1 so that we can tally points in correctWord function
+    
+    //convert to string 
+
+    //add string to url
+
+    //fetch dictionary api with url
+
+    //if true - move on to correctWord scenario/function
+
+    if (fetchAPI('true') === true) {
+        correctWord()
+    }
+    //if false - move on to incorrectWord scenario/function
+    else {
+        incorrectWord()
+    }
+}
+
+const correctWord = () => {
+    console.log('correct word')
+    //tally points in played tiles array and save in global variable for comparing at results
+    
+
+    //update message to correct word message with button to pass to next player
+    addCurrentPlayer(currentPlayer)
+    updateMessage(correctWordMessage, nextPlayerButton)
+    
+    //update scoreboard with score
+    document.getElementById(`p${currentPlayer}-scoreboard`).textContent = `> Player 1: ${player1Score}`
 
 
+    if (currentPlayer === 1) {
+        //event listener on next player button, on click - nextPlayerScreen
+        document.getElementById('next-player-btn').addEventListener('click', nextPlayerScreen)
+    }
+    else {
+        //event listener on next player button, on click - showResults
+        document.getElementById('next-player-btn').addEventListener('click', showResults)
+    }
+}
+
+
+const incorrectWord = () => {
+    //update message to incorrect word message with next player/results button
+    addCurrentPlayer(currentPlayer)
+    updateMessage(incorrectWordMessage, nextPlayerButton)
+    
+    if (currentPlayer === 1) {
+
+        currentPlayer += 1    
+
+        //add event listener on next player button, on click function nextPlayerScreen
+        document.getElementById('next-player-btn').addEventListener('click', nextPlayerScreen)
+    }
+    else {
+        document.getElementById('next-player-btn').addEventListener('click', showResults)
+    }
+}
+
+const nextPlayerScreen = () => {
+    currentPlayer += 1
+    console.log('Player', currentPlayer, 'you are up')
+
+    //hide scoreboard
+    //update scoreboard to Player 2
+    showHideElement(SCORE_BOARD, 'hide')
+    document.getElementById(`p${currentPlayer - 1}-scoreboard`).textContent = `Player ${currentPlayer - 1}`
+    document.getElementById(`p${currentPlayer - 1}-scoreboard`).style.color = "black"
+    document.getElementById(`p${currentPlayer}-scoreboard`).textContent = `> Player ${currentPlayer}`
+    document.getElementById(`p${currentPlayer}-scoreboard`).style.color = "#E14658"
+
+    //hide game buttons
+    showHideElement(GAME_BUTTONS, 'hide')
+
+    resetTiles()
+
+    //showHideElement on each tile to hide
+    hideTiles()
+
+    //update message board with playerReady message and playerReadyButton
+    addCurrentPlayer(currentPlayer)
+    updateMessage(playerReadyMessage, playerReadyButton)
+
+    //event listener on button? click - playerTurn
+    document.getElementById('player-ready-btn').addEventListener('click', playerTurn)
+}
+
+const showResults = () => {
+    console.log('show results')
+
+    //hide message and game board
+    showHideElement(GAME_MESSAGE_BOARD, 'hide')
+
+    //hide playerboard
+    showHideElement(PLAYER_BOARD, 'hide')
+
+    //create new div element
+    let resultsDiv = document.createElement('div')
+    resultsDiv.innerHTML = resultsText
+    resultsDiv.setAttribute('class', 'results')
+    document.querySelector('main').appendChild(resultsDiv)
+        //message that includes who won, each player's points and word played
+        //play again button - on click goes back to start game
+}
+
+//add click event to quit button - go back to welcome
+// document.getElementById('quit-btn').addEventListener('click', )

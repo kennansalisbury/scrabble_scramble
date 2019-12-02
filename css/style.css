@@ -7,48 +7,55 @@
     width: 100px;
 }
 
-.hidden {
-    display: none;
+main {
+    text-align: center;
 }
 
-.show {
-    display: inline-block;
+.highlight-square {
+    border: 1px solid #E14658;
 }
 
 header {
     width: 100vw;
     height: 10vh;
-    background: whitesmoke;
-    border: 1px solid gray;
+    background: #EFEFEF;
+    color: #E14658;
     text-align: center;
 }
 
-button {
+.smallbutton {
     display: block;
     padding: 10px;
     width: 80px;
     margin: 5px;
+    font-size: 20px;
+}
+
+.bigbutton {
+    display: block;
+    padding: 10px;
+    width: 200px;
+    margin: 5px;
+    background: #CAEBF2;
+    font-size: 20px;
 }
 
 #quit-btn {
     margin-left: 5vw;
-    margin-top: 1vh;
+    margin-top: 2vh;
     width: 100px;
-}
-
-#game-name {
-
+    font-size: 15px;
 }
 
 h1 {
    margin: 0;
+   margin-top: 2vh;
    font-size: 40px;
    display: inline-block;
 }
 
 main {
     width: 100vw;
-
 }
 
 #message-and-gameboard {
@@ -63,7 +70,9 @@ main {
     height: 400px;
     width: 40vw;
     margin: 10px 50px 10px 20px;
-    background: whitesmoke;
+    padding: 10px;
+    background: #E14658;
+    color: white;
     text-align: center;
     display: flex;
     flex-direction: column;
@@ -81,7 +90,8 @@ main {
 #scoreboard {
     width: 20vw;
     margin-left: 20px;
-    background: whitesmoke;
+    background: #EFEFEF;
+    color: black;
 }
 
 #gameboard div img {
@@ -100,6 +110,19 @@ main {
     display: none;
     height: 50px;
     width: 50px;
+    margin: 5px;
+}
+
+.hidden {
+    display: none;
+}
+
+.results {
+    
+}
+
+footer {
+    text-align: center;
 }
 
 

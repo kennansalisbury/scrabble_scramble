@@ -1,16 +1,23 @@
 //constants
 const GAME_BUTTONS = document.getElementById('game-btns')
+const GAME_MESSAGE_BOARD = document.getElementById('message-and-gameboard')
 const MESSAGE_BOARD = document.getElementById('messageboard')
+const PLAYER_BOARD = document.getElementById('playerboard')
 const QUIT_BUTTON = document.getElementById('quit-btn')
 const SCORE_BOARD = document.getElementById('scoreboard')
 const TILE_BOARD = document.getElementById('tileboard')
+const NUMBER_TILES_PER_PLAYER = 5
 
 //global variables
 let currentPlayer = 1
+let playerTiles = []
+let playerReadyMessage, playerReadyButton, playerPlayMessage, nextPlayerButton, incorrectWordMessage, confirmPlayMessage, confirmPassMessage, yesNoButtons, resultsText
+let player1Score = 0
+let player2Score = 0
+let interval
 
 
-
-//create tiles
+//create & store tiles with points and image
 let letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
 
 class tile {
