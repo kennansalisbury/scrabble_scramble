@@ -7,6 +7,7 @@ const QUIT_BUTTON = document.getElementById('quit-btn')
 const SCORE_BOARD = document.getElementById('scoreboard')
 const TILE_BOARD = document.getElementById('tileboard')
 const NUMBER_TILES_PER_PLAYER = 5
+const FETCH_TEST_URL = 'https://pokeapi.co/api/v2/pokemon/ditto/'
 
 //global variables
 let apiURL
@@ -27,10 +28,11 @@ let playerReadyMessage,
 let playedTilesPlayer, playedWordPlayer
 let playedTilesP1 = []
 let playedTilesP2 = []
+let playedWordP1, playedWordP2
+let playedTilesPlayerObjects = []
 let player1Score = 0
 let player2Score = 0
-let playedWordP1
-let playedWordP2
+let playerScore
 let interval
 
 
@@ -54,7 +56,10 @@ for (let i = 0; i < letters.length; i++) {
     else if (letters[i] === 'J' || letters[i] === 'X') {
         points = 8
     }
-    else if (letters[i] === 'F' || letters[i] === 'H' || letters[i] === 'W' || letters[i] === 'Y') {
+    else if (letters[i] === 'K') {
+        points = 5
+    }
+    else if (letters[i] === 'F' || letters[i] === 'H' || letters[i] === 'V' || letters[i] === 'W' || letters[i] === 'Y') {
         points = 4
     }
     else if (letters[i] === 'D' || letters[i] === 'G') {

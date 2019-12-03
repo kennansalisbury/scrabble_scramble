@@ -9,10 +9,19 @@ playerReadyButton = `<button id="player-ready-btn" class='bigbutton'>Player ${pl
 
 incorrectWordMessage = `<p>Sorry, ${player}, that's not a word!</p>`
 
-correctWordMessage = `
-    <h4>Nice job!</h4>
-    <h5>That's ${player1Score} points</h5>
-    <br>`
+if (playerScore === 1) {
+    correctWordMessage = `
+        <h4>Nice job!</h4>
+        <h5>That's ${playerScore} point!</h5>
+        <br>`
+}
+else {
+    correctWordMessage = `
+        <h4>Nice job!</h4>
+        <h5>That's ${playerScore} points!</h5>
+        <br>`
+}
+
 
 confirmPlayMessage = 
     `<h4>Player ${player}, are you ready to play this word?</h4>`
@@ -58,10 +67,62 @@ else {
     nextPlayerButton =
     `<button id="next-player-btn" class="bigbutton">See who won</button>`
     }
-
-resultsText = `<h4>test</h4>`
-
 }
+
+const populateResults = (p1word, p2word) => {
+
+    if (player1Score > player2Score) {
+        resultsText = `
+        <h4>Player 1 wins!</h4>
+        <br>
+        <h5>Player 1</h5>
+        <h6>Word: ${playedWordP1}</h6>
+        <h6>Score: ${player1Score}</h6>
+        <br>
+        <h5>Player 2</h5>
+        <h6>Word: ${playedWordP2}</h6>
+        <h6>Score: ${player2Score}</h6>
+        <br>
+        <button id = 'start-over' class = 'bigbutton'>Start a New Game</button>
+        <br>
+        `
+    }
+    else if (player2Score > player1Score) {
+        resultsText = `
+        <h4>Player 2 wins!</h4>
+        <br>
+        <h5>Player 1</h5>
+        <h6>Word: ${playedWordP1}</h6>
+        <h6>Score: ${player1Score}</h6>
+        <br>
+        <h5>Player 2</h5>
+        <h6>Word: ${playedWordP2}</h6>
+        <h6>Score: ${player2Score}</h6>
+        <br>
+        <button id = 'start-over' class = 'bigbutton'>Start a New Game</button>
+        <br>`
+    }
+    else {
+        resultsText = `
+        <h4>It's a tie!</h4>
+        <br>
+        <h5>Player 1</h5>
+        <h6>Word: ${playedWordP1}</h6>
+        <h6>Score: ${player1Score}</h6>
+        <br>
+        <h5>Player 2</h5>
+        <h6>Word: ${playedWordP2}</h6>
+        <h6>Score: ${player2Score}</h6>
+        <br>
+        <button id = 'start-over' class = 'bigbutton'>Start a New Game</button>
+        <br>
+        `
+    }
+    return resultsText
+}
+
+
+
 
 //ERROR MESSAGES
 

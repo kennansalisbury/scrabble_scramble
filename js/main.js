@@ -113,6 +113,7 @@ const playTiles = (player) => {
     playedWordPlayer
     playedTilesP1 = []
     playedTilesP2 = []
+    playedTilesPlayerObjects = []
 
     if (player === 1) {
         playedTilesPlayer = playedTilesP1
@@ -133,7 +134,8 @@ const playTiles = (player) => {
         for (let i = 10; i < gameboardDivNodes.length-10; i++) {
            //if image in tile, take img source and push object that has matching img source to array
             if (gameboardDivNodes[i].hasChildNodes()) {
-                let object = allTiles.find(obj => obj.img=== gameboardDivNodes[i].childNodes[0].src) 
+                object = allTiles.find(obj => obj.img=== gameboardDivNodes[i].childNodes[0].src) 
+                playedTilesPlayerObjects.push(object)
                 playedTilesPlayer.push(object.letter)
             }
             else {
@@ -141,6 +143,7 @@ const playTiles = (player) => {
             }
         }
         console.log(playedTilesPlayer)
+        console.log(playedTilesPlayerObjects)
 
         let playedLetters = []
         
@@ -166,10 +169,19 @@ const playTiles = (player) => {
             apiURL = `https://dictionaryapi.com/api/v3/references/collegiate/json/${playedWordPlayer}?key=7cb66aa0-7487-4666-92aa-393636fd82d9`
             console.log(apiURL)
         }
+        
+        //set value of playedWordPlayer back to global playedWordP1 or P2
+        if (player === 1) {
+            playedWordP1 = playedWordPlayer
+        }
+        else {
+            playedWordP2 = playedWordPlayer
+        }
+        
 
     //FOR TESTING ONLY:
 
-    fetchAPI('https://pokeapi.co/api/v2/pokemon/ditt/')
+    fetchAPI(FETCH_TEST_URL)
 
     //REALAPI:
 
@@ -178,26 +190,46 @@ const playTiles = (player) => {
         // console.log('waiting on data')
 }
 
-const correctWord = () => {
+const correctWord = (player) => {
     console.log('correct word')
-    
+    console.log(playedTilesPlayerObjects)
+
+    if (player === 1) {
+        playerScore = player1Score
+    }
+    else {
+        playerScore = player2Score
+    }
+
     //tally points in played tiles array and save in global variable for comparing at results
+    let total = 0
+    playedTilesPlayerObjects.forEach(object => {
+        total += object.points
+    })
+    playerScore = total
+    console.log(playerScore)
+
         //let object = allTiles.find(obj => obj.img=== 'image src url)
         //object.points -- gives you points for that tile
+
+    //FOR TESTING:
+    // playerScore += 1
 
     //update message to correct word message with button to pass to next player
     addCurrentPlayer(currentPlayer)
     updateMessage(correctWordMessage, nextPlayerButton)
     
     //update scoreboard with score
-    document.getElementById(`p${currentPlayer}-scoreboard`).textContent = `> Player 1: ${player1Score}`
+    document.getElementById(`p${currentPlayer}-scoreboard`).textContent = `> Player ${currentPlayer}: ${playerScore}`
 
     if (currentPlayer === 1) {
         //event listener on next player button, on click - nextPlayerScreen
+        player1Score = playerScore
         document.getElementById('next-player-btn').addEventListener('click', nextPlayerScreen)
     }
     else {
         //event listener on next player button, on click - showResults
+        player2Score = playerScore
         document.getElementById('next-player-btn').addEventListener('click', showResults)
     }
 }
@@ -249,6 +281,8 @@ const nextPlayerScreen = () => {
 
 const showResults = () => {
     console.log('show results')
+
+    populateResults(playedWordP1, playedWordP2)
 
     //hide message and game board
     showHideElement(GAME_MESSAGE_BOARD, 'hide')
