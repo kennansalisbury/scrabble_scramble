@@ -184,7 +184,35 @@ const dragDropSetup = () => {
     document.getElementById('3e').setAttribute('ondragleave', 'dragLeave(event)')
 }
 
-//FOR TESTING ONLY, real API fetch below commented out
+
+const checkForIllegalSpaces = () => {
+    for (let i = 0; i < playedTilesPlayer.length; i++) {
+        //if playedTilesPlayer[i] is an empty string (it is false, so ! will return true) AND playedTilesPlayer[i-1] has a letter AND playedTilesPlayer[i+1] has a letter
+        if (!playedTilesPlayer[i] && playedTilesPlayer[i-1] && playedTilesPlayer[i+1]) {
+            return true
+        }
+    }
+}
+
+// FOR TESTING ONLY, real API fetch below commented out
+
+const fetchAPI = (url) => {
+    
+    fetch(url)
+    .then(response => response.json()) //translates JSON into javascript object
+    .then(data => {
+
+     if(data) {  //if fetch returns data
+        correctWord()
+       }
+    })
+    .catch(err => {
+        console.log('error', err)
+        incorrectWord()
+    })
+}
+
+
 
 // const fetchAPI = (url) => {
     
@@ -192,10 +220,10 @@ const dragDropSetup = () => {
 //     .then(response => response.json()) //translates JSON into javascript object
 //     .then(data => {
 
-//      if(data) {  //if fetch returns data
+//      if(data[0].meta) {  //if fetch returns an array whose first index is an object called meta, it's true and should move to correctword function
 //         correctWord()
 //        }
-//        else {  //else it is false and should move to incorrect word 
+//        else {  //else it is false and should move to incorrect word (if not a word, data comes back just 1 single array of words that are similar to the input word)
 //         incorrectWord()
 //        }
 //     })
@@ -204,23 +232,3 @@ const dragDropSetup = () => {
 //         //error message
 //     })
 // }
-
-
-const fetchAPI = (url) => {
-    
-    fetch(url)
-    .then(response => response.json()) //translates JSON into javascript object
-    .then(data => {
-
-     if(data[0].meta) {  //if fetch returns an array whose first index is an object called meta, it's true and should move to correctword function
-        correctWord()
-       }
-       else {  //else it is false and should move to incorrect word (if not a word, data comes back just 1 single array of words that are similar to the input word)
-        incorrectWord()
-       }
-    })
-    .catch(err => {
-        console.log('error', err)
-        //error message
-    })
-}

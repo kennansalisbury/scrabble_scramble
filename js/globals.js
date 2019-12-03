@@ -24,11 +24,13 @@ let playerReadyMessage,
     noLettersPlayedError,
     goBackButton,
     resultsText
+let playedTilesPlayer, playedWordPlayer
 let playedTilesP1 = []
 let playedTilesP2 = []
 let player1Score = 0
 let player2Score = 0
 let playedWordP1
+let playedWordP2
 let interval
 
 
