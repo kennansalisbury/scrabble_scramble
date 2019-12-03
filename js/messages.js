@@ -62,3 +62,11 @@ else {
 resultsText = `<h4>test</h4>`
 
 }
+
+//ERROR MESSAGES
+
+spaceBetweenLettersError = `<p>Error: there can be no spaces in the middle of the word. Please fix and try again. </p>`
+
+noLettersPlayedError = `<p>Error: you have not played any tiles. Please fix and try again or pass your turn.</p>`
+
+goBackButton = `<button id = 'goBack' class = 'bigbutton'>Go Back</button>`

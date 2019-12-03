@@ -80,9 +80,16 @@ const resetTiles = () => {
     
         //clear tiles from gameboard
         //show tiles in tile board
-        //remove event listeners or droppable from board squares
-        //remove event listeners or draggable from tiles
+        //need to reset drag & drop?
     
+}
+
+const backToTurnScreen = () => {
+    recallTiles()
+    
+    addCurrentPlayer(currentPlayer)
+    updateMessage(playerPlayMessage)
+    addGameButtonEventListeners()
 }
 
 //set up drag & drop functions, add draggable attributes to tiles, and add droppable attributes to game squares

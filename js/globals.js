@@ -9,11 +9,26 @@ const TILE_BOARD = document.getElementById('tileboard')
 const NUMBER_TILES_PER_PLAYER = 5
 
 //global variables
+let apiURL
 let currentPlayer = 1
 let playerTiles = []
-let playerReadyMessage, playerReadyButton, playerPlayMessage, nextPlayerButton, incorrectWordMessage, confirmPlayMessage, confirmPassMessage, yesNoButtons, resultsText
+let playerReadyMessage, 
+    playerReadyButton, 
+    playerPlayMessage, 
+    nextPlayerButton, 
+    incorrectWordMessage, 
+    confirmPlayMessage, 
+    confirmPassMessage, 
+    yesNoButtons,
+    spaceBetweenLettersError,
+    noLettersPlayedError,
+    goBackButton,
+    resultsText
+let playedTilesP1 = []
+let playedTilesP2 = []
 let player1Score = 0
 let player2Score = 0
+let playedWordP1
 let interval
 
 
@@ -49,6 +64,6 @@ for (let i = 0; i < letters.length; i++) {
     else {
         points = 1
     }
-    let img = `./assets/img/letter${letters[i]}.png`
+    let img = `file:///Users/kennansalisbury/sei28/unit_1/projects/scrabble_scramble/assets/img/letter${letters[i]}.png`
     allTiles.push(new tile(letters[i], points, img))
 }

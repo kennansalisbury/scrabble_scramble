@@ -83,14 +83,7 @@ const confirmPass = () => {
     })
 
     //add event listener to no button 
-    document.getElementById('no').addEventListener('click', () => {
-        
-        recallTiles()
-        
-        addCurrentPlayer(currentPlayer)
-        updateMessage(playerPlayMessage)
-        addGameButtonEventListeners()
-    })
+    document.getElementById('no').addEventListener('click', backToTurnScreen)
 
     console.log(`Player ${currentPlayer}`)
 }
@@ -107,40 +100,137 @@ const confirmPlay = () => {
     document.getElementById('yes').addEventListener('click', playTiles)
 
     //add event listener to nevermind button, on click 
-    document.getElementById('no').addEventListener('click', () => {
-        recallTiles()
-        
-        addCurrentPlayer(currentPlayer)
-        updateMessage(playerPlayMessage)
-        addGameButtonEventListeners()
-    })
+    document.getElementById('no').addEventListener('click', backToTurnScreen)
 
 }
 
 const playTiles = () => {
     console.log('play tiles')
+    //clear arrays
+    playedTilesP1 = []
+    playedTilesP2 = []
 
     //MVP - push from left to right the object data that is in each square to an array - array should be global and specific to player 1 so that we can tally points in correctWord function
-    
-    //convert to string 
+    let gameboardDivNodes = document.querySelectorAll('#gameboard div') //<loop through this array
+        // console.log(gameboardDivNodes)
+        // console.log(gameboardDivNodes[10].childNodes[0].src)
+        // let object = playerTiles.find(obj => obj.img === gameboardDivNodes[10].childNodes[0].src)
+        // console.log(object)
 
-    //add string to url
+    //CODE FOR PLAYER 1
+    if (currentPlayer === 1) {
+        for (let i = 10; i < gameboardDivNodes.length-10; i++) {
+           //if image in tile, take img source and push object that has matching img source to array
+            if (gameboardDivNodes[i].hasChildNodes()) {
+                let object = allTiles.find(obj => obj.img=== gameboardDivNodes[i].childNodes[0].src) 
+                playedTilesP1.push(object.letter)
+            }
+            else {
+                playedTilesP1.push('')
+            }
+        }
+        console.log(playedTilesP1)
 
-    //fetch dictionary api with url
+        let playedLettersP1 = []
+        
+        //if there is a square that has a letter on the square before it and a letter on the square after it, sorry, no spaces error message
+        const checkForIllegalSpaces = () => {
+            for (let i = 0; i < playedTilesP1.length; i++) {
+                //if playedTilesP1[i] is an empty string (it is false, so ! will return true) AND playedTilesP1[i-1] has a letter AND playedTilesP1[i+1] has a letter
+                if (!playedTilesP1[i] && playedTilesP1[i-1] && playedTilesP1[i+1]) {
+                    return true
+                }
+            }
+        }
 
-    //FOR TESTING ONLY, real API below commented out
+        if (checkForIllegalSpaces() === true) {
+            updateMessage(spaceBetweenLettersError, goBackButton)
+            document.getElementById('goBack').addEventListener('click', backToTurnScreen)    
+        }
+        //if there are no letters, no letters here error message
+        else if (playedTilesP1.every(el => el === '')) {
+                console.log('no letters error')
+                updateMessage(noLettersPlayedError, goBackButton)
+                document.getElementById('goBack').addEventListener('click', backToTurnScreen)
+        }
+        else {
+            //remove empty strings
+            playedLettersP1 = playedTilesP1.filter(el => el !== '')
+            //convert to string - save to variable
+            playedWordP1 = playedLettersP1.join('')
+            console.log(playedLettersP1)
+            console.log(playedWordP1)
+            //add to api URL
+            apiURL = `https://dictionaryapi.com/api/v3/references/collegiate/json/${playedWordP1}?key=7cb66aa0-7487-4666-92aa-393636fd82d9`
+        }
+    }
 
+    //CODE FOR PLAYER 2
+    if (currentPlayer === 2) {
+        for (let i = 10; i < gameboardDivNodes.length-10; i++) {
+           //if image in tile, take img source and push object that has matching img source to array
+            if (gameboardDivNodes[i].hasChildNodes()) {
+                let object = allTiles.find(obj => obj.img=== gameboardDivNodes[i].childNodes[0].src) 
+                playedTilesP2.push(object.letter)
+            }
+            else {
+                playedTilesP2.push('')
+            }
+        }
+        console.log(playedTilesP2)
 
-    fetchAPI(`https://dictionaryapi.com/api/v3/references/collegiate/json/cry?key=7cb66aa0-7487-4666-92aa-393636fd82d9`)
+        let playedLettersP2 = []
+        
+        //if there is a square that has a letter on the square before it and a letter on the square after it, sorry, no spaces error message
+        const checkForIllegalSpaces = () => {
+            for (let i = 0; i < playedTilesP2.length; i++) {
+                //if playedTilesP2[i] is an empty string (it is false, so ! will return true) AND playedTilesP2[i-1] has a letter AND playedTilesP2[i+1] has a letter
+                if (!playedTilesP2[i] && playedTilesP2[i-1] && playedTilesP2[i+1]) {
+                    return true
+                }
+            }
+        }
 
-    // fetchAPI('https://pokeapi.co/api/v2/pokemon/ditto/')
-    console.log('waiting on data')
+        if (checkForIllegalSpaces() === true) {
+            updateMessage(spaceBetweenLettersError, goBackButton)
+            document.getElementById('goBack').addEventListener('click', backToTurnScreen)    
+        }
+
+        //if there are no letters, no letters here error message
+        if (playedTilesP2.every(el => el === '')) {
+                console.log('no letters error')
+                updateMessage(noLettersPlayedError, goBackButton)
+                document.getElementById('goBack').addEventListener('click', backToTurnScreen)
+        }
+     
+        else {
+            //remove empty strings
+            playedLettersP2 = playedTilesP2.filter(el => el !== '')
+            //convert to string - save to variable
+            playedWordP2 = playedLettersP2.join('')
+            console.log(playedLettersP2)
+            console.log(playedWordP2)
+            //add to api URL
+            apiURL = `https://dictionaryapi.com/api/v3/references/collegiate/json/${playedWordP2}?key=7cb66aa0-7487-4666-92aa-393636fd82d9`
+        }
+    }
+    //FOR TESTING ONLY:
+
+    //fetchAPI('https://pokeapi.co/api/v2/pokemon/ditto/')
+
+    //REALAPI:
+
+        fetchAPI(apiURL)
+
+        console.log('waiting on data')
 }
 
 const correctWord = () => {
     console.log('correct word')
-    //tally points in played tiles array and save in global variable for comparing at results
     
+    //tally points in played tiles array and save in global variable for comparing at results
+        //let object = allTiles.find(obj => obj.img=== 'image src url)
+        //object.points -- gives you points for that tile
 
     //update message to correct word message with button to pass to next player
     addCurrentPlayer(currentPlayer)
@@ -148,7 +238,6 @@ const correctWord = () => {
     
     //update scoreboard with score
     document.getElementById(`p${currentPlayer}-scoreboard`).textContent = `> Player 1: ${player1Score}`
-
 
     if (currentPlayer === 1) {
         //event listener on next player button, on click - nextPlayerScreen
@@ -179,6 +268,8 @@ const incorrectWord = () => {
 }
 
 const nextPlayerScreen = () => {
+    //clear/reset drag & drop styles (squares where dropped are staying pink, and tileboard where tiles taken from staying gray)
+    
     currentPlayer += 1
     console.log('Player', currentPlayer, 'you are up')
 
