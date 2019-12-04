@@ -46,7 +46,7 @@ https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API
 ## APPROACH
 
 Created WireFrames
-![wireframe_img](wireframe_img.png)
+![wireframe_img](./wireframes/wireframe_img.png)
 
 ### Created Trello Board
 Included lists for:
@@ -55,7 +55,7 @@ Included lists for:
 * Stretch goals
 
 And added to as new requirements and needs arose
-![trello_img](trello_img.png)
+![trello_img](./wireframes/trello_img.png)
 
 I tackled execution in the following order:
 *Set up initial structure of the game board and the surrounding elements (i.e. message board, scoreboard, tileboard and game buttons) using HTML & CSS.
