@@ -3,16 +3,16 @@
     padding: 0;
   } 
 
+.hidden {
+    display: none;
+}
+
 #start-btn{
     width: 100px;
 }
 
 main {
     text-align: center;
-}
-
-.highlight-square {
-    border: 1px solid #E14658;
 }
 
 header {
@@ -26,9 +26,9 @@ header {
 .smallbutton {
     display: block;
     padding: 10px;
-    width: 80px;
+    width: 65px;
     margin: 5px;
-    font-size: 20px;
+    font-size: 16px;
 }
 
 .bigbutton {
@@ -68,7 +68,7 @@ main {
 }
 
 #messageboard {
-    height: 400px;
+    height: 350px;
     width: 40vw;
     margin: 10px 50px 10px 20px;
     padding: 10px;
@@ -89,10 +89,11 @@ main {
 }
 
 #scoreboard {
-    width: 20vw;
+    width: 25vw;
     margin-left: 20px;
     background: #EFEFEF;
     color: black;
+    text-align: left;
 }
 
 #gameboard div {
@@ -120,25 +121,14 @@ main {
     width: 50px;
 }
 
-.hidden {
-    display: none;
-}
 
-.results {
-    display:flex;
-    flex-direction:column;
-    justify-content: center;
-    align-items: center;
+.highlight-square {
+    border: 1px solid #E14658;
 }
-
-footer {
-    text-align: center;
-}
-
 
 #gameboard {
-    width: 400px;
-    height: 400px;
+    width: 350px;
+    height: 350px;
     display: grid;
     grid-template-rows: 20% 20% 20% 20% 20%;
     grid-template-columns: 20% 20% 20% 20% 20%;  
@@ -225,3 +215,13 @@ footer {
     grid-area: 5e
 }
 
+.results {
+    display:flex;
+    flex-direction:column;
+    justify-content: center;
+    align-items: center;
+}
+
+footer {
+    text-align: center;
+}

@@ -1,3 +1,4 @@
+updateMessage(welcomeMessage)
 
 const startGame = () => {
 
@@ -30,6 +31,12 @@ const startGame = () => {
 document.getElementById('start-btn').addEventListener('click', startGame)
 
 const playerTurn = () => {
+
+    //if there is no interval set
+    if (!interval || (currentPlayer === 2 && !interval)) {
+        interval = setInterval(timerCountdown, 1000)
+    }
+    
     //show tiles
     showTiles()
     
@@ -41,8 +48,13 @@ const playerTurn = () => {
 
     //show scoreboard w/ currentPlayer
     showHideElement(SCORE_BOARD, 'show')
-    document.getElementById(`p${currentPlayer}-scoreboard`).textContent = `> Player ${currentPlayer}`
-    document.getElementById(`p${currentPlayer}-scoreboard`).style.color = "#E14658"
+    document.getElementById(`p${currentPlayer}-scoreboard`).textContent = `Player ${currentPlayer}`
+    document.getElementById(`p${currentPlayer}-scoreboard`).style.background = "#E14658"
+    document.getElementById(`p${currentPlayer}-scoreboard`).style.color = "white"
+    document.getElementById(`p${currentPlayer}-scoreboard`).style.display = "inline-block"
+    document.getElementById(`p${currentPlayer}-scoreboard`).style.padding = "1px"
+    TIMER_ON_SCOREBOARD.textContent = `Time Remaining: ${timer}`
+    TIMER_ON_SCOREBOARD.style.fontSize = '15px'
 
     //update message
     addCurrentPlayer(currentPlayer)
@@ -119,6 +131,10 @@ const confirmPlay = () => {
 
 const playTiles = (player) => {
     console.log('play tiles')
+    //clear interval
+    clearInterval(interval)
+    timer = START_TIME
+
     //clear arrays
     playedTilesPlayer
     playedWordPlayer
@@ -192,11 +208,11 @@ const playTiles = (player) => {
 
     //FOR TESTING ONLY:
 
-    // fetchAPI(FETCH_TEST_URL)
+    fetchAPI(FETCH_TEST_URL)
 
-    //REALAPI:
+    // //REALAPI:
 
-    fetchAPI(apiURL)
+    // fetchAPI(apiURL)
 
     // console.log('waiting on data')
 }
@@ -205,12 +221,12 @@ const correctWord = (player) => {
     console.log('correct word')
     console.log(playedTilesPlayerObjects)
 
-    if (player === 1) {
-        playerScore = player1Score
-    }
-    else {
-        playerScore = player2Score
-    }
+    // if (player === 1) {
+    //     playerScore = player1Score
+    // }
+    // else {
+    //     playerScore = player2Score
+    // }
 
     //tally points in played tiles array and save in global variable for comparing at results
     let total = 0
@@ -247,6 +263,9 @@ const incorrectWord = () => {
     //update message to incorrect word message with next player/results button
     addCurrentPlayer(currentPlayer)
     updateMessage(incorrectWordMessage, nextPlayerButton)
+
+    //update score to 0
+    document.getElementById(`p${currentPlayer}-scoreboard`).textContent = `> Player ${currentPlayer}: ${playerScore}`
     
     if (currentPlayer === 1) {
         //add event listener on next player button, on click function nextPlayerScreen
@@ -258,7 +277,10 @@ const incorrectWord = () => {
 }
 
 const nextPlayerScreen = () => {
-    //clear/reset drag & drop styles (squares where dropped are staying pink, and tileboard where tiles taken from staying gray)
+    //clear interval
+    clearInterval(interval)
+    interval = ''
+    timer = START_TIME
     
     currentPlayer += 1
     console.log('Player', currentPlayer, 'you are up')
@@ -268,8 +290,8 @@ const nextPlayerScreen = () => {
     showHideElement(SCORE_BOARD, 'hide')
     document.getElementById(`p${currentPlayer - 1}-scoreboard`).textContent = `Player ${currentPlayer - 1}`
     document.getElementById(`p${currentPlayer - 1}-scoreboard`).style.color = "black"
-    document.getElementById(`p${currentPlayer}-scoreboard`).textContent = `> Player ${currentPlayer}`
-    document.getElementById(`p${currentPlayer}-scoreboard`).style.color = "#E14658"
+    document.getElementById(`p${currentPlayer - 1}-scoreboard`).style.background = ""
+    document.getElementById(`p${currentPlayer - 1}-scoreboard`).style.display = "block"
 
     //hide game buttons
     showHideElement(GAME_BUTTONS, 'hide')

@@ -1,4 +1,10 @@
-//constants
+//CONSTANTS
+const FETCH_TEST_URL = 'https://pokeapi.co/api/v2/pokemon/ditto/'
+const NUMBER_TILES_PER_PLAYER = 5
+const START_TIME = 30
+
+//CONSTANTS - DOM elements
+const GAME_BOARD_DIV_NODES = document.querySelectorAll('#gameboard div')
 const GAME_BUTTONS = document.getElementById('game-btns')
 const GAME_MESSAGE_BOARD = document.getElementById('message-and-gameboard')
 const MESSAGE_BOARD = document.getElementById('messageboard')
@@ -6,37 +12,40 @@ const PLAYER_BOARD = document.getElementById('playerboard')
 const QUIT_BUTTON = document.getElementById('quit-btn')
 const SCORE_BOARD = document.getElementById('scoreboard')
 const TILE_BOARD = document.getElementById('tileboard')
-const NUMBER_TILES_PER_PLAYER = 5
-const FETCH_TEST_URL = 'https://pokeapi.co/api/v2/pokemon/ditto/'
-const GAME_BOARD_DIV_NODES = document.querySelectorAll('#gameboard div')
 const TILE_BOARD_DIV_NODES = document.querySelectorAll('#tileboard div')
+const TIMER_ON_SCOREBOARD = document.getElementById('timer')
+
 
 //global variables
+let allTiles = []
 let apiURL
 let currentPlayer = 1
-let playerTiles = []
-let playerReadyMessage, 
-    playerReadyButton, 
-    playerPlayMessage, 
-    nextPlayerButton, 
-    incorrectWordMessage, 
-    confirmPlayMessage, 
-    confirmPassMessage, 
-    yesNoButtons,
-    spaceBetweenLettersError,
-    noLettersPlayedError,
-    goBackButton,
-    resultsText
+let interval
 let playedTilesPlayer, playedWordPlayer
 let playedTilesP1 = []
 let playedTilesP2 = []
-let playedWordP1, playedWordP2
 let playedTilesPlayerObjects = []
+let playedWordP1, playedWordP2
 let player1Score = 0
 let player2Score = 0
 let playerScore
-let interval
+let playerTiles = []
+let points
+let timer = START_TIME
 
+//messages
+let confirmPlayMessage, 
+    confirmPassMessage, 
+    incorrectWordMessage, 
+    noLettersPlayedError,
+    playerReadyMessage, 
+    playerReadyButton, 
+    playerPlayMessage, 
+    spaceBetweenLettersError, 
+    resultsText
+
+//buttons
+let goBackButton, nextPlayerButton, yesNoButtons
 
 //create & store tiles with points and image
 let letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
@@ -50,8 +59,7 @@ class tile {
     }
 }
 
-let allTiles = []
-let points
+
 for (let i = 0; i < letters.length; i++) {
     if (letters[i] === 'Q' || letters[i] === 'Z') {
         points = 10

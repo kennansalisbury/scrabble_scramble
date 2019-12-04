@@ -83,6 +83,47 @@ const showTiles = () => {
     }
 }
 
+const timesUp = () => {
+    //clear interval
+    clearInterval(interval)
+    
+    //update message to incorrect word message with next player/results button
+    addCurrentPlayer(currentPlayer)
+    updateMessage(timesUpMessage, nextPlayerButton)
+    
+    if (currentPlayer === 1) {
+        //add event listener on next player button, on click function nextPlayerScreen
+        document.getElementById('next-player-btn').addEventListener('click', nextPlayerScreen)
+    }
+    else {
+        document.getElementById('next-player-btn').addEventListener('click', showResults)
+    }
+
+    timer = START_TIME
+}
+
+const timerCountdown = () => {
+    console.log('tick')
+    timer -= 1
+    TIMER_ON_SCOREBOARD.textContent = `Time Remaining: ${timer}`
+    TIMER_ON_SCOREBOARD.style.color = 'black'
+
+    if (timer === 0) {
+        timesUp()
+        console.log('time up!')
+    }
+    else if (timer === 8) {
+        TIMER_ON_SCOREBOARD.style.fontSize = '20'
+    }
+    else if (timer === 6) {
+        TIMER_ON_SCOREBOARD.style.fontSize = '30px'
+    } 
+    else if (timer <= 3) {
+        TIMER_ON_SCOREBOARD.style.fontSize = '40px'
+        TIMER_ON_SCOREBOARD.style.color = 'red'
+    }
+}
+
 
 const recallTiles = () => {
     console.log('this will recall tiles')
@@ -113,8 +154,6 @@ const resetTiles = () => {
 
         //add tiles in tile board
         createPlayerTiles()
-        
-        //need to reset drag & drop?
     
 }
 
@@ -253,43 +292,43 @@ const checkForIllegalSpaces = () => {
 
 // FOR TESTING ONLY, real API fetch below commented out
 
-// const fetchAPI = (url) => {
-    
-//     fetch(url)
-//     .then(response => response.json()) //translates JSON into javascript object
-//     .then(data => {
-
-//      if(data) {  //if fetch returns data
-//         correctWord()
-//        }
-//     })
-//     .catch(err => {
-//         console.log('error', err)
-//         incorrectWord()
-//     })
-// }
-
-
-//REAL API
-
 const fetchAPI = (url) => {
     
     fetch(url)
     .then(response => response.json()) //translates JSON into javascript object
     .then(data => {
 
-     if(data[0].meta) {  //if fetch returns an array whose first index is an object called meta, it's true and should move to correctword function
+     if(data) {  //if fetch returns data
         correctWord()
-       }
-       else {  //else it is false and should move to incorrect word (if not a word, data comes back just 1 single array of words that are similar to the input word)
-        incorrectWord()
        }
     })
     .catch(err => {
         console.log('error', err)
-        //error message
+        incorrectWord()
     })
 }
+
+
+//REAL API
+
+// const fetchAPI = (url) => {
+    
+//     fetch(url)
+//     .then(response => response.json()) //translates JSON into javascript object
+//     .then(data => {
+
+//      if(data[0].meta) {  //if fetch returns an array whose first index is an object called meta, it's true and should move to correctword function
+//         correctWord()
+//        }
+//        else {  //else it is false and should move to incorrect word (if not a word, data comes back just 1 single array of words that are similar to the input word)
+//         incorrectWord()
+//        }
+//     })
+//     .catch(err => {
+//         console.log('error', err)
+//         //error message
+//     })
+// }
 
 
 const refreshClick = btnId => {
