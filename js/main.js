@@ -30,9 +30,6 @@ const startGame = () => {
 document.getElementById('start-btn').addEventListener('click', startGame)
 
 const playerTurn = () => {
-    //if tiles on board
-        //resetTiles()
-    
     //show tiles
     showTiles()
     
@@ -63,6 +60,9 @@ const playerTurn = () => {
 }
 
 const confirmPass = () => {
+    //turn drag & drop off
+    dragDropOff()
+    
     //update messageboard with confirmPass message and add confirm button
     addCurrentPlayer(currentPlayer)
     updateMessage(confirmPassMessage, yesNoButtons)
@@ -85,10 +85,21 @@ const confirmPass = () => {
     //add event listener to no button 
     document.getElementById('no').addEventListener('click', backToTurnScreen)
 
+    if (currentPlayer === 1) {
+        playedWordP1 = 'Passed Turn'
+        
+    }
+    else {
+        playedWordP2 = 'Passed Turn'
+    }
+
     console.log(`Player ${currentPlayer}`)
 }
 
 const confirmPlay = () => {
+    //turn off drag & drop
+    dragDropOff()
+    
     //remove game button event listeners
     removeGameButtonEventListeners()
     
@@ -125,16 +136,16 @@ const playTiles = (player) => {
     }
 
     //MVP - push from left to right the object data that is in each square to an array - array should be global and specific to player 1 so that we can tally points in correctWord function
-    let gameboardDivNodes = document.querySelectorAll('#gameboard div') //<loop through this array
-        // console.log(gameboardDivNodes)
-        // console.log(gameboardDivNodes[10].childNodes[0].src)
-        // let object = playerTiles.find(obj => obj.img === gameboardDivNodes[10].childNodes[0].src)
+    //loop through GAME_BOARD_DIV_NODES 
+        // console.log(GAME_BOARD_DIV_NODES)
+        // console.log(GAME_BOARD_DIV_NODES[10].childNodes[0].src)
+        // let object = playerTiles.find(obj => obj.img === GAME_BOARD_DIV_NODES[10].childNodes[0].src)
         // console.log(object)
 
-        for (let i = 10; i < gameboardDivNodes.length-10; i++) {
+        for (let i = 10; i < GAME_BOARD_DIV_NODES.length-10; i++) {
            //if image in tile, take img source and push object that has matching img source to array
-            if (gameboardDivNodes[i].hasChildNodes()) {
-                object = allTiles.find(obj => obj.img=== gameboardDivNodes[i].childNodes[0].src) 
+            if (GAME_BOARD_DIV_NODES[i].hasChildNodes()) {
+                object = allTiles.find(obj => obj.img=== GAME_BOARD_DIV_NODES[i].childNodes[0].src) 
                 playedTilesPlayerObjects.push(object)
                 playedTilesPlayer.push(object.letter)
             }
@@ -181,13 +192,13 @@ const playTiles = (player) => {
 
     //FOR TESTING ONLY:
 
-    fetchAPI(FETCH_TEST_URL)
+    // fetchAPI(FETCH_TEST_URL)
 
     //REALAPI:
 
-        // fetchAPI(apiURL)
+    fetchAPI(apiURL)
 
-        // console.log('waiting on data')
+    // console.log('waiting on data')
 }
 
 const correctWord = (player) => {
@@ -208,9 +219,6 @@ const correctWord = (player) => {
     })
     playerScore = total
     console.log(playerScore)
-
-        //let object = allTiles.find(obj => obj.img=== 'image src url)
-        //object.points -- gives you points for that tile
 
     //FOR TESTING:
     // playerScore += 1
@@ -266,6 +274,7 @@ const nextPlayerScreen = () => {
     //hide game buttons
     showHideElement(GAME_BUTTONS, 'hide')
 
+    //reset tiles
     resetTiles()
 
     //showHideElement on each tile to hide
@@ -282,6 +291,7 @@ const nextPlayerScreen = () => {
 const showResults = () => {
     console.log('show results')
 
+    //message that includes who won, each player's points and word played
     populateResults(playedWordP1, playedWordP2)
 
     //hide message and game board
@@ -295,9 +305,13 @@ const showResults = () => {
     resultsDiv.innerHTML = resultsText
     resultsDiv.setAttribute('class', 'results')
     document.querySelector('main').appendChild(resultsDiv)
-        //message that includes who won, each player's points and word played
-        //play again button - on click goes back to start game
+
+    
+    //play again button - on click goes back to start game
+    refreshClick('start-over')
 }
 
 //add click event to quit button - go back to welcome
-// document.getElementById('quit-btn').addEventListener('click', )
+refreshClick('quit-btn')
+
+

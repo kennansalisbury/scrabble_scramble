@@ -30,11 +30,22 @@ const removeGameButtonEventListeners = () => {
 
 
 let randomIndex
+let vowelIndices = [0, 4, 8, 14, 20]
+let randomVowel
 const randomTiles = () => {
+
     for (let i = 0; i < NUMBER_TILES_PER_PLAYER; i++) {
-        randomIndex = Math.floor(Math.random() * (allTiles.length - 1))
-        playerTiles.push(allTiles[randomIndex])
+        if (i === 0) {
+            randomIndex = Math.floor(Math.random() * vowelIndices.length)
+            randomVowel = vowelIndices[randomIndex]
+            playerTiles.push(allTiles[randomVowel])
+        }
+        else {
+            randomIndex = Math.floor(Math.random() * allTiles.length)
+            playerTiles.push(allTiles[randomIndex])
+        }  
     }
+    console.log(playerTiles)
     
 }
 
@@ -54,9 +65,12 @@ const createPlayerTiles = () => {
 
 const hideTiles = () => {
     //loop through player tiles and hide
-    for (let i = 0; i < NUMBER_TILES_PER_PLAYER; i++) {
-        showHideElement(document.getElementById(`tile${i}`), 'hide')
-    }
+    // for (let i = 0; i < NUMBER_TILES_PER_PLAYER; i++) {
+    //     showHideElement(document.getElementById(`tile${i}`), 'hide')
+    // }
+
+    //hide tileboard
+    showHideElement(TILE_BOARD, 'hide')
 }
 
 const showTiles = () => {
@@ -64,13 +78,18 @@ const showTiles = () => {
     for (let i = 0; i < NUMBER_TILES_PER_PLAYER; i++) {
         showHideElement(document.getElementById(`tile${i}`), 'show')
     }
+    if (TILE_BOARD.style.display === 'none') {
+        showHideElement(TILE_BOARD, 'show')
+    }
 }
 
 
 const recallTiles = () => {
     console.log('this will recall tiles')
     
-    //resetTiles()
+    resetTiles()
+
+    playerTurn()
 
     //dragDropSetup()
 }
@@ -79,7 +98,22 @@ const resetTiles = () => {
     console.log('this will clear game board and remove event listeners')
     
         //clear tiles from gameboard
-        //show tiles in tile board
+        for (let i = 10; i < GAME_BOARD_DIV_NODES.length-10; i++) {
+            if (GAME_BOARD_DIV_NODES[i].hasChildNodes()) {
+                GAME_BOARD_DIV_NODES[i].removeChild(document.querySelector('img'))
+            }
+        }
+
+        //clear tiles from tileboard
+        for (let i = 0; i < TILE_BOARD_DIV_NODES.length; i++) {
+            if (TILE_BOARD_DIV_NODES[i].hasChildNodes()) {
+                TILE_BOARD_DIV_NODES[i].removeChild(document.querySelector('img'))
+            }
+        }
+
+        //add tiles in tile board
+        createPlayerTiles()
+        
         //need to reset drag & drop?
     
 }
@@ -128,6 +162,9 @@ const dragLeave = e => {
 //when dropped:
 const drop = e => {
     console.log(e)
+    console.log(e.path[0].children[0])
+
+    e.target.style.background = "#EFEFEF"
     
     //only if there is not already a tile image there
     if (!e.target.contains(document.querySelector('img'))) {
@@ -156,7 +193,7 @@ const dragDropSetup = () => {
         let currentTile = document.getElementById(`tile${i}`)
         currentTile.setAttribute('draggable', 'true')
         currentTile.setAttribute('ondragstart', 'drag(event)')
-        console.log(currentTile)
+        
     }
     //add attributes to squares to allow a drop and tell it what to do when something is dropped on it
     document.getElementById('3a').setAttribute('ondragover', 'allowDrop(event)')
@@ -182,6 +219,26 @@ const dragDropSetup = () => {
     document.getElementById('3c').setAttribute('ondragleave', 'dragLeave(event)')
     document.getElementById('3d').setAttribute('ondragleave', 'dragLeave(event)')
     document.getElementById('3e').setAttribute('ondragleave', 'dragLeave(event)')
+
+    //add attributes to tileboard divs to allow a drop etc. so that if they drag a tile and then drop it back it will not give error and will reset tile border
+
+    for (let i=0; i < TILE_BOARD.length; i++) {
+        let currentTileboardDiv = document.querySelector(`#tileboard .tile${i}`)
+        currentTileboardDiv.setAttribute('ondragover', 'allowDrop(event)')
+        currentTileboardDiv.setAttribute('ondrop', 'drop(event)')
+        currentTileboardDiv.setAttribute('ondragenter', 'dragEnter(event)')
+        currentTileboardDiv.setAttribute('ondragleave', 'dragLeave(event)')
+    }
+}
+
+const dragDropOff = () => {
+    //loop through tiles and set draggable attribute to '' for each tile
+    for (let i=0; i < playerTiles.length; i++) {
+        let currentTile = document.getElementById(`tile${i}`)
+        currentTile.setAttribute('draggable', 'false')
+        currentTile.setAttribute('ondragstart', '')
+        
+    }
 }
 
 
@@ -196,39 +253,47 @@ const checkForIllegalSpaces = () => {
 
 // FOR TESTING ONLY, real API fetch below commented out
 
-const fetchAPI = (url) => {
-    
-    fetch(url)
-    .then(response => response.json()) //translates JSON into javascript object
-    .then(data => {
-
-     if(data) {  //if fetch returns data
-        correctWord()
-       }
-    })
-    .catch(err => {
-        console.log('error', err)
-        incorrectWord()
-    })
-}
-
-
-
 // const fetchAPI = (url) => {
     
 //     fetch(url)
 //     .then(response => response.json()) //translates JSON into javascript object
 //     .then(data => {
 
-//      if(data[0].meta) {  //if fetch returns an array whose first index is an object called meta, it's true and should move to correctword function
+//      if(data) {  //if fetch returns data
 //         correctWord()
-//        }
-//        else {  //else it is false and should move to incorrect word (if not a word, data comes back just 1 single array of words that are similar to the input word)
-//         incorrectWord()
 //        }
 //     })
 //     .catch(err => {
 //         console.log('error', err)
-//         //error message
+//         incorrectWord()
 //     })
 // }
+
+
+//REAL API
+
+const fetchAPI = (url) => {
+    
+    fetch(url)
+    .then(response => response.json()) //translates JSON into javascript object
+    .then(data => {
+
+     if(data[0].meta) {  //if fetch returns an array whose first index is an object called meta, it's true and should move to correctword function
+        correctWord()
+       }
+       else {  //else it is false and should move to incorrect word (if not a word, data comes back just 1 single array of words that are similar to the input word)
+        incorrectWord()
+       }
+    })
+    .catch(err => {
+        console.log('error', err)
+        //error message
+    })
+}
+
+
+const refreshClick = btnId => {
+    document.getElementById(btnId).addEventListener('click', () => {
+        document.location.reload(true);
+    })
+}

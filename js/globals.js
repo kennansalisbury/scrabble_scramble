@@ -8,6 +8,8 @@ const SCORE_BOARD = document.getElementById('scoreboard')
 const TILE_BOARD = document.getElementById('tileboard')
 const NUMBER_TILES_PER_PLAYER = 5
 const FETCH_TEST_URL = 'https://pokeapi.co/api/v2/pokemon/ditto/'
+const GAME_BOARD_DIV_NODES = document.querySelectorAll('#gameboard div')
+const TILE_BOARD_DIV_NODES = document.querySelectorAll('#tileboard div')
 
 //global variables
 let apiURL
@@ -40,10 +42,11 @@ let interval
 let letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
 
 class tile {
-    constructor(letter, points, img) {
+    constructor(letter, points, img, vowel) {
         this.letter = letter
         this.points = points
         this.img = img
+        this.vowel = vowel
     }
 }
 
@@ -72,5 +75,11 @@ for (let i = 0; i < letters.length; i++) {
         points = 1
     }
     let img = `file:///Users/kennansalisbury/sei28/unit_1/projects/scrabble_scramble/assets/img/letter${letters[i]}.png`
-    allTiles.push(new tile(letters[i], points, img))
+    if (letters[i] === 'A' || letters[i] === 'E' || letters[i] === 'I' || letters[i] === 'O' || letters[i] === 'U') {
+        vowel = 'true'
+    }
+    else {
+        vowel = 'false'
+    }
+    allTiles.push(new tile(letters[i], points, img, vowel))
 }
