@@ -194,11 +194,11 @@ const playTiles = (player) => {
 
             //FOR TESTING ONLY:
 
-            fetchTESTAPI(FETCH_TEST_URL)
+            // fetchTESTAPI(FETCH_TEST_URL)
 
             //REALAPI:
 
-            // fetchAPI(apiURL)
+            fetchAPI(apiURL)
 
             // console.log('waiting on data')
         }
