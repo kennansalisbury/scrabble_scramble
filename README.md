@@ -58,11 +58,11 @@ And added to as new requirements and needs arose
 ![trello_img](./wireframes/trello_img.png)
 
 I tackled execution in the following order:
-*Set up initial structure of the game board and the surrounding elements (i.e. message board, scoreboard, tileboard and game buttons) using HTML & CSS.
-*Researched Dictionary APIs and Drag & Drop functionality resources - to confirm these would be a doable part of my project.
-*Added high level pseudocode/comments into my Javascript files for the initial flow of the game.
-*Worked through logic step by step as the player would go through the game
-*Added timer at the end as a semi-"stretch" goal
+* Set up initial structure of the game board and the surrounding elements (i.e. message board, scoreboard, tileboard and game buttons) using HTML & CSS.
+* Researched Dictionary APIs and Drag & Drop functionality resources - to confirm these would be a doable part of my project.
+* Added high level pseudocode/comments into my Javascript files for the initial flow of the game.
+* Worked through logic step by step as the player would go through the game
+* Added timer at the end as a semi-"stretch" goal
 
 
 ## UNSOLVED PROBLEMS
