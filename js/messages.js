@@ -30,7 +30,7 @@ else {
         <br>`
 }
     
-incorrectWordMessage = `<p>Sorry, Player ${player}, that's not a word!</p>`
+incorrectWordMessage = `<h4>Sorry, Player ${player}, that's not a word!</h4>`
 
 playerReadyMessage = `
     <h4>Player ${player}, you're up!</h4>
@@ -53,17 +53,17 @@ if (player === 1) {
    
     playerPlayMessage = `
         <h4>Player ${player}, you're up!</h4>
-        <p>Drag & drop tiles onto the board to create a word.</p>
+        <p>Drag & drop tiles onto the outlined board squares to create a word.</p>
         <br>
-        <p>Click “Recall” if at any point before playing a word you want to bring all of your current play tiles back to your tile board.</p>
+        <p>“Recall” brings all of your tiles back from the board.</p>
         <br>
-        <p>Once you are happy with your word, click “Play” to play your word.</p>
+        <p>Click “Play” when you're ready to play your word.</p>
         <br>
-        <p>Or, if you can’t come up with a word - click “Pass.” This will give up your turn and we’ll see if Player ${player + 1} can come up with a word.</p>
+        <p>Or click "Pass" to pass your turn to Player ${player + 1}.</p>
         <br>`
 
     confirmPassMessage = `
-        <h4>Player ${player}, are you sure you want to pass to Player ${player + 1}?`
+        <h5>Player ${player}, are you sure you want to pass to Player ${player + 1}?</h5>`
 
     nextPlayerButton =
         `<p>Click below when you are ready to pass to Player ${player + 1}</p>
@@ -72,17 +72,17 @@ if (player === 1) {
 else {
     playerPlayMessage =`
         <h4>Player ${player}, you're up!</h4>
-        <p>Drag & drop tiles onto the board to create a word.</p>
+        <p>Drag & drop tiles onto the outlined board squares to create a word.</p>
         <br>
-        <p>Click “Recall” if at any point before playing a word you want to bring all of your current play tiles back to your tile board.</p>
+        <p>“Recall” brings all of your tiles back from the board.</p>
         <br>
-        <p>Once you are happy with your word, click “Play” to play your word.</p>
+        <p>Click “Play” when you're ready to play your word.</p>
         <br>
-        <p>Or, if you can’t come up with a word - click “Pass.” This will give up your turn and we’ll see if Player ${player - 1} was able to come up with a word.</p>
+        <p>Or click "Pass" to pass your turn and we’ll see if Player ${player - 1} was able to come up with a word.</p>
         <br>`
 
     confirmPassMessage = `
-        <h4>Player ${player}, are you sure you want to pass up your turn?`
+        <h5>Player ${player}, are you sure you want to pass up your turn?</h5>`
     
     nextPlayerButton =
     `<button id="next-player-btn" class="bigbutton">See who won</button>`

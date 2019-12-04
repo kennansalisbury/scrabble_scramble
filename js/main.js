@@ -34,7 +34,7 @@ const playerTurn = () => {
 
     //if there is no interval set
     if (!interval || (currentPlayer === 2 && !interval)) {
-        interval = setInterval(timerCountdown, 1000)
+        interval = setInterval(timerCountdown, INTERVAL_TIME)
     }
     
     //show tiles
@@ -82,8 +82,6 @@ const confirmPass = () => {
     //remove click event listeners from game buttons
     removeGameButtonEventListeners()
 
-    //remove click styling on buttons
-
     //add event listeners to confirm button, on click playerTurn
     document.getElementById('yes').addEventListener('click', () => {
         if (currentPlayer === 1) {
@@ -104,8 +102,6 @@ const confirmPass = () => {
     else {
         playedWordP2 = 'Passed Turn'
     }
-
-    console.log(`Player ${currentPlayer}`)
 }
 
 const confirmPlay = () => {
@@ -131,9 +127,6 @@ const confirmPlay = () => {
 
 const playTiles = (player) => {
     console.log('play tiles')
-    //clear interval
-    clearInterval(interval)
-    timer = START_TIME
 
     //clear arrays
     playedTilesPlayer
@@ -181,11 +174,14 @@ const playTiles = (player) => {
         }
         //if there are no letters, no letters here error message
         else if (playedTilesPlayer.every(el => el === '')) {
-                console.log('no letters error')
-                updateMessage(noLettersPlayedError, goBackButton)
-                document.getElementById('goBack').addEventListener('click', backToTurnScreen)
+            console.log('no letters error')
+            updateMessage(noLettersPlayedError, goBackButton)
+            document.getElementById('goBack').addEventListener('click', backToTurnScreen)
         }
         else {
+            //clear interval
+            clearInterval(interval)
+            timer = START_TIME
             //remove empty strings
             playedLetters = playedTilesPlayer.filter(el => el !== '')
             //convert to string - save to variable
@@ -195,6 +191,16 @@ const playTiles = (player) => {
             //add to api URL
             apiURL = `https://dictionaryapi.com/api/v3/references/collegiate/json/${playedWordPlayer}?key=7cb66aa0-7487-4666-92aa-393636fd82d9`
             console.log(apiURL)
+
+            //FOR TESTING ONLY:
+
+            fetchTESTAPI(FETCH_TEST_URL)
+
+            //REALAPI:
+
+            // fetchAPI(apiURL)
+
+            // console.log('waiting on data')
         }
         
         //set value of playedWordPlayer back to global playedWordP1 or P2
@@ -206,15 +212,6 @@ const playTiles = (player) => {
         }
         
 
-    //FOR TESTING ONLY:
-
-    fetchAPI(FETCH_TEST_URL)
-
-    // //REALAPI:
-
-    // fetchAPI(apiURL)
-
-    // console.log('waiting on data')
 }
 
 const correctWord = (player) => {
@@ -236,15 +233,13 @@ const correctWord = (player) => {
     playerScore = total
     console.log(playerScore)
 
-    //FOR TESTING:
-    // playerScore += 1
 
     //update message to correct word message with button to pass to next player
     addCurrentPlayer(currentPlayer)
     updateMessage(correctWordMessage, nextPlayerButton)
     
     //update scoreboard with score
-    document.getElementById(`p${currentPlayer}-scoreboard`).textContent = `> Player ${currentPlayer}: ${playerScore}`
+    document.getElementById(`p${currentPlayer}-scoreboard`).textContent = `Player ${currentPlayer}: ${playerScore}`
 
     if (currentPlayer === 1) {
         //event listener on next player button, on click - nextPlayerScreen
@@ -260,19 +255,24 @@ const correctWord = (player) => {
 
 
 const incorrectWord = () => {
+    //set playerscore to 0
+    playerScore = 0
+
     //update message to incorrect word message with next player/results button
     addCurrentPlayer(currentPlayer)
     updateMessage(incorrectWordMessage, nextPlayerButton)
 
     //update score to 0
-    document.getElementById(`p${currentPlayer}-scoreboard`).textContent = `> Player ${currentPlayer}: ${playerScore}`
+    document.getElementById(`p${currentPlayer}-scoreboard`).textContent = `Player ${currentPlayer}: ${playerScore}`
     
     if (currentPlayer === 1) {
         //add event listener on next player button, on click function nextPlayerScreen
         document.getElementById('next-player-btn').addEventListener('click', nextPlayerScreen)
+        player1Score = playerScore
     }
     else {
         document.getElementById('next-player-btn').addEventListener('click', showResults)
+        player2Score = playerScore
     }
 }
 
@@ -295,6 +295,9 @@ const nextPlayerScreen = () => {
 
     //hide game buttons
     showHideElement(GAME_BUTTONS, 'hide')
+
+    //hide timer
+    showHideElement(TIMER_ON_SCOREBOARD, 'hide')
 
     //reset tiles
     resetTiles()

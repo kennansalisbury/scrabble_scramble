@@ -11,13 +11,21 @@
     width: 100px;
 }
 
+body {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
 main {
     text-align: center;
 }
 
 header {
-    width: 100vw;
-    height: 10vh;
+    margin: 0 auto;
+    width: 800px;
+    height: 80px;
     background: #EFEFEF;
     color: #E14658;
     text-align: center;
@@ -42,8 +50,8 @@ header {
 }
 
 #quit-btn {
-    margin-left: 5vw;
-    margin-top: 2vh;
+    margin-left: 5px;
+    margin-top: 20px;
     width: 100px;
     font-size: 15px;
 }
@@ -55,6 +63,10 @@ h1 {
    display: inline-block;
 }
 
+h5 {
+    margin: 5px;
+}
+
 main {
     width: 100vw;
 }
@@ -63,14 +75,14 @@ main {
     padding: 10px;
     display: flex;
     flex-direction: row;
-    justify-content: flex-start;
+    justify-content: center;
     align-items: center;
 }
 
 #messageboard {
     height: 350px;
-    width: 40vw;
-    margin: 10px 50px 10px 20px;
+    width: 350px;
+    margin: 10px 50px 10px 0;
     padding: 10px;
     background: #E14658;
     color: white;
@@ -81,20 +93,6 @@ main {
     align-items: center;
 }
 
-#playerboard {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: center;
-}
-
-#scoreboard {
-    width: 25vw;
-    margin-left: 20px;
-    background: #EFEFEF;
-    color: black;
-    text-align: left;
-}
 
 #gameboard div {
     height: 100%;
@@ -102,25 +100,6 @@ main {
     background: #EFEFEF;
     border: 1px solid white;
 }
-
-#tileboard {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-}
-
-#tileboard div {
-    display: inline-block;
-    width: 50px;
-    height: 50px;
-}
-
-#tileboard img {
-    display: none;
-    height: 50px;
-    width: 50px;
-}
-
 
 .highlight-square {
     border: 1px solid #E14658;
@@ -213,6 +192,55 @@ main {
 }
 #5e {
     grid-area: 5e
+}
+
+#playerboard {
+    width: 800px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+}
+
+#scoreboard {
+    padding: 20px;
+    margin: 30px;
+    background: #EFEFEF;
+    color: black;
+    text-align: center;
+}
+
+
+#tileboard-timer {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+#tileboard {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+#tileboard div {
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+}
+
+#tileboard img {
+    display: none;
+    height: 50px;
+    width: 50px;
+}
+
+.center-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .results {

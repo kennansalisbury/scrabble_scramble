@@ -61,31 +61,38 @@
         <section id="playerboard" class="row">
             
             <div id="scoreboard" class="col s12 m3 l3 center-align hidden">
-                <h5 id='timer'></h5>
+                <!-- <h5 id='timer'></h5> -->
                 <h5 id='p1-scoreboard'>Player 1</h5>
                 <h5 id='p2-scoreboard'>Player 2</h5>
             </div>
 
-            <div id="tileboard" class="col s12 m6 l6 center-align hidden">
+            <div id="tileboard-timer" class="col s12 m6 l6 center-align hidden">
                 <!--images placed here thru javascript-->
-                <div class="tile0"></div>
-                <div class="tile1"></div>
-                <div class="tile2"></div>
-                <div class="tile3"></div>
-                <div class="tile4"></div>
+                <div id = "tileboard">
+                    <div class="tile0"></div>
+                    <div class="tile1"></div>
+                    <div class="tile2"></div>
+                    <div class="tile3"></div>
+                    <div class="tile4"></div>
+                </div>
+                
+                <div id = "timer-section">
+                    <h5 id = 'timer'></h5>
+                </div>
             </div>
 
             <div id="game-btns" class="col s12 m3 l3 center-align hidden">
-                <button id="play-btn" class="smallbutton">Play</button>
-                <button id="recall-btn" class="smallbutton">Recall</button>
-                <button id="pass-btn" class="smallbutton">Pass</button>
+                <div class = 'center-content'>
+                    <button id="play-btn" class="smallbutton">Play</button>
+                    <button id="recall-btn" class="smallbutton">Recall</button>
+                    <button id="pass-btn" class="smallbutton">Pass</button>
+                </div>
             </div>
         </section>
-
     </main>
     
     <footer>
-        <p>Made by KS</p>
+        <p>Made by Kennan Salisbury</p>
     </footer>
 
     <script src="./js/globals.js"></script>

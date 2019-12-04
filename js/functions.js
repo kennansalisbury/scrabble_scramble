@@ -86,6 +86,16 @@ const showTiles = () => {
 const timesUp = () => {
     //clear interval
     clearInterval(interval)
+
+    //drag & drop off
+    dragDropOff()
+
+    //game button click event listeners off
+    removeGameButtonEventListeners()
+
+    //add 0 to player scoreboard
+    playerScore = 0
+    document.getElementById(`p${currentPlayer}-scoreboard`).textContent = `Player ${currentPlayer}: ${playerScore}`
     
     //update message to incorrect word message with next player/results button
     addCurrentPlayer(currentPlayer)
@@ -94,9 +104,11 @@ const timesUp = () => {
     if (currentPlayer === 1) {
         //add event listener on next player button, on click function nextPlayerScreen
         document.getElementById('next-player-btn').addEventListener('click', nextPlayerScreen)
+        playedWordP1 = 'Ran Out Of Time'
     }
     else {
         document.getElementById('next-player-btn').addEventListener('click', showResults)
+        playedWordP2 = 'Ran Out Of Time'
     }
 
     timer = START_TIME
@@ -112,14 +124,11 @@ const timerCountdown = () => {
         timesUp()
         console.log('time up!')
     }
-    else if (timer === 8) {
-        TIMER_ON_SCOREBOARD.style.fontSize = '20'
+    else if (timer === 10) {
+        TIMER_ON_SCOREBOARD.style.fontSize = '20px'
     }
-    else if (timer === 6) {
-        TIMER_ON_SCOREBOARD.style.fontSize = '30px'
-    } 
-    else if (timer <= 3) {
-        TIMER_ON_SCOREBOARD.style.fontSize = '40px'
+    else if (timer <= 5) {
+        TIMER_ON_SCOREBOARD.style.fontSize = '25px'
         TIMER_ON_SCOREBOARD.style.color = 'red'
     }
 }
@@ -131,8 +140,6 @@ const recallTiles = () => {
     resetTiles()
 
     playerTurn()
-
-    //dragDropSetup()
 }
 
 const resetTiles = () => {
@@ -180,6 +187,11 @@ const drag = e => {
     e.path[0].parentNode.setAttribute('ondrop', 'drop(event)')
     e.path[0].parentNode.setAttribute('ondragenter', 'dragEnter(event)')
     e.path[0].parentNode.setAttribute('ondragleave', 'dragLeave(event)')
+}
+
+//remove border when drag ends
+const dragEnd = e => {
+    e.target.style.border = ''
 }
 
 //remove the default that keeps elements/data from being dropped in other elements
@@ -232,6 +244,7 @@ const dragDropSetup = () => {
         let currentTile = document.getElementById(`tile${i}`)
         currentTile.setAttribute('draggable', 'true')
         currentTile.setAttribute('ondragstart', 'drag(event)')
+        currentTile.setAttribute('ondragend', 'dragEnd(event)')
         
     }
     //add attributes to squares to allow a drop and tell it what to do when something is dropped on it
@@ -276,6 +289,7 @@ const dragDropOff = () => {
         let currentTile = document.getElementById(`tile${i}`)
         currentTile.setAttribute('draggable', 'false')
         currentTile.setAttribute('ondragstart', '')
+        currentTile.setAttribute('ondragend', '')
         
     }
 }
@@ -283,8 +297,8 @@ const dragDropOff = () => {
 
 const checkForIllegalSpaces = () => {
     for (let i = 0; i < playedTilesPlayer.length; i++) {
-        //if playedTilesPlayer[i] is an empty string (it is false, so ! will return true) AND playedTilesPlayer[i-1] has a letter AND playedTilesPlayer[i+1] has a letter
-        if (!playedTilesPlayer[i] && playedTilesPlayer[i-1] && playedTilesPlayer[i+1]) {
+        //if playedTilesPlayer[i] is an empty string (it is false, so ! will return true) AND playedTilesPlayer[i-1] has a letter AND playedTilesPlayer[i+1] or i+2 or i+3 has a letter
+        if (!playedTilesPlayer[i] && playedTilesPlayer[i-1] && (playedTilesPlayer[i+1] || playedTilesPlayer[i+2] || playedTilesPlayer[i+3])) {
             return true
         }
     }
@@ -292,7 +306,7 @@ const checkForIllegalSpaces = () => {
 
 // FOR TESTING ONLY, real API fetch below commented out
 
-const fetchAPI = (url) => {
+const fetchTESTAPI = (url) => {
     
     fetch(url)
     .then(response => response.json()) //translates JSON into javascript object
@@ -311,24 +325,24 @@ const fetchAPI = (url) => {
 
 //REAL API
 
-// const fetchAPI = (url) => {
+const fetchAPI = (url) => {
     
-//     fetch(url)
-//     .then(response => response.json()) //translates JSON into javascript object
-//     .then(data => {
+    fetch(url)
+    .then(response => response.json()) //translates JSON into javascript object
+    .then(data => {
 
-//      if(data[0].meta) {  //if fetch returns an array whose first index is an object called meta, it's true and should move to correctword function
-//         correctWord()
-//        }
-//        else {  //else it is false and should move to incorrect word (if not a word, data comes back just 1 single array of words that are similar to the input word)
-//         incorrectWord()
-//        }
-//     })
-//     .catch(err => {
-//         console.log('error', err)
-//         //error message
-//     })
-// }
+     if(data[0].meta) {  //if fetch returns an array whose first index is an object called meta, it's true and should move to correctword function
+        correctWord()
+       }
+       else {  //else it is false and should move to incorrect word (if not a word, data comes back just 1 single array of words that are similar to the input word)
+        incorrectWord()
+       }
+    })
+    .catch(err => {
+        console.log('error', err)
+        //error message
+    })
+}
 
 
 const refreshClick = btnId => {

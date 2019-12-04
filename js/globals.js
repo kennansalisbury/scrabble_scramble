@@ -1,5 +1,6 @@
 //CONSTANTS
 const FETCH_TEST_URL = 'https://pokeapi.co/api/v2/pokemon/ditto/'
+const INTERVAL_TIME = 1000
 const NUMBER_TILES_PER_PLAYER = 5
 const START_TIME = 30
 
@@ -13,7 +14,7 @@ const QUIT_BUTTON = document.getElementById('quit-btn')
 const SCORE_BOARD = document.getElementById('scoreboard')
 const TILE_BOARD = document.getElementById('tileboard')
 const TILE_BOARD_DIV_NODES = document.querySelectorAll('#tileboard div')
-const TIMER_ON_SCOREBOARD = document.getElementById('timer')
+const TIMER_ON_SCOREBOARD = document.getElementById('timer-section')
 
 
 //global variables
