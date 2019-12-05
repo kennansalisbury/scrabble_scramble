@@ -264,6 +264,7 @@ const nextPlayerScreen = () => {
     clearInterval(interval)
     interval = ''
     timer = START_TIME
+    TIMER_ON_SCOREBOARD.style.color = 'black'
     
     //increment currentplayer
     currentPlayer += 1
