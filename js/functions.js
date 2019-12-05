@@ -93,14 +93,12 @@ const timesUp = () => {
 }
 
 const timerCountdown = () => {
-    console.log('tick')
     timer -= 1
     TIMER_ON_SCOREBOARD.textContent = `Time Remaining: ${timer}`
     TIMER_ON_SCOREBOARD.style.color = 'black'
 
     if (timer === 0) {
         timesUp()
-        console.log('time up!')
     }
     else if (timer === 10) {
         TIMER_ON_SCOREBOARD.style.fontSize = '20px'
@@ -181,7 +179,7 @@ const backToTurnScreen = () => {
 
 //when drag begins, set data being transfered to be the img id
 const drag = e => {
-    // console.log(e)
+
     e.dataTransfer.setData("text", e.target.id)
     e.dataTransfer.dropEffect = "move"
     e.target.style.border = '1px solid #E14658'
@@ -219,8 +217,7 @@ const allowDrop = e => {
 
 //when dropped:
 const drop = e => {
-    console.log(e)
-    console.log(e.path[0].children[0])
+
 
     //change background back to blue
     e.target.style.background = "#CAEBF2"
@@ -238,10 +235,13 @@ const drop = e => {
         let data = e.dataTransfer.getData("text")
 
         //append the draggable element's data to the droppable element
+        
+        if (e.target !== document.getElementById(data)) {
         e.target.appendChild(document.getElementById(data))
         document.getElementById(data).style.height = "100%"
         document.getElementById(data).style.width = "100%"
         document.getElementById(data).style.border = ''
+        }
 
         //remove attribute to allow drops
         e.target.setAttribute('ondrop', '')

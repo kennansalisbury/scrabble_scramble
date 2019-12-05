@@ -4,7 +4,7 @@
 
 Scrambble is a one-round, time restricted word game in which 2 players compete to play the best word from a random set of tiles.
 
-Click HERE ---- ADD LINK ----- to play.
+Click [HERE](https://kennansalisbury.github.io/scrabble_scramble/) to play.
 
 ## HOW IT WORKS
 

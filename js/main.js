@@ -150,7 +150,7 @@ const playTiles = (player) => {
     for (let i = 10; i < GAME_BOARD_DIV_NODES.length-10; i++) {
         //if image in tile, take img source and push object that has matching img source to array
         if (GAME_BOARD_DIV_NODES[i].hasChildNodes()) {
-            object = allTiles.find(obj => obj.img=== GAME_BOARD_DIV_NODES[i].childNodes[0].src) 
+            object = allTiles.find(obj => obj.img=== GAME_BOARD_DIV_NODES[i].childNodes[0].attributes[1].value) 
             playedTilesPlayerObjects.push(object)
             playedTilesPlayer.push(object.letter)
         }
@@ -167,7 +167,6 @@ const playTiles = (player) => {
     }
     //if there are no letters, display no letters error message
     else if (playedTilesPlayer.every(el => el === '')) {
-        console.log('no letters error')
         updateMessage(noLettersPlayedError, goBackButton)
         document.getElementById('goBack').addEventListener('click', backToTurnScreen)
     }

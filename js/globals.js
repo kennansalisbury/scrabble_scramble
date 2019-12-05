@@ -1,5 +1,4 @@
 //CONSTANTS
-const FETCH_TEST_URL = 'https://pokeapi.co/api/v2/pokemon/ditto/'
 const INTERVAL_TIME = 1000
 const NUMBER_TILES_PER_PLAYER = 5
 const START_TIME = 30
@@ -85,7 +84,7 @@ for (let i = 0; i < letters.length; i++) {
     else {
         points = 1
     }
-    let img = `file:///Users/kennansalisbury/sei28/unit_1/projects/scrabble_scramble/assets/img/letter${letters[i]}.png`
+    let img = `./assets/img/letter${letters[i]}.png`
     if (letters[i] === 'A' || letters[i] === 'E' || letters[i] === 'I' || letters[i] === 'O' || letters[i] === 'U') {
         vowel = 'true'
     }
