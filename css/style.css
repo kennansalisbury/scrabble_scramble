@@ -7,29 +7,7 @@
     display: none;
 }
 
-#start-btn{
-    width: 100px;
-}
-
-body {
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-}
-
-main {
-    text-align: center;
-}
-
-header {
-    margin: 0 auto;
-    width: 800px;
-    height: 80px;
-    background: #EFEFEF;
-    color: #E14658;
-    text-align: center;
-}
+/* buttons */
 
 .smallbutton {
     display: block;
@@ -37,6 +15,29 @@ header {
     width: 65px;
     margin: 5px;
     font-size: 16px;
+    background: #EFEFEF;
+}
+
+.smallbutton:hover {
+    background: #A9A9A9;
+}
+
+.smallbutton:focus {
+    background: #EFEFEF;
+}
+
+.smallbutton-disable {
+    display: block;
+    padding: 10px;
+    width: 65px;
+    margin: 5px;
+    font-size: 16px;
+    background: #EFEFEF;
+    color: #A9A9A9
+}
+
+.smallbutton-disable:focus {
+    background: #EFEFEF;
 }
 
 .bigbutton {
@@ -49,11 +50,46 @@ header {
     font-size: 20px;
 }
 
+.bigbutton:hover {
+    background: black;
+}
+
+.bigbutton:focus {
+    background: #E14658;
+}
+
+#start-btn{
+    width: 100px;
+}
+
 #quit-btn {
     margin-left: 5px;
     margin-top: 20px;
     width: 100px;
     font-size: 15px;
+}
+
+/* main content */
+
+body {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+header {
+    margin: 0 auto;
+    width: 800px;
+    height: 80px;
+    background: #EFEFEF;
+    color: #E14658;
+    text-align: center;
+}
+
+main {
+    width: 100vw;
+    text-align: center;
 }
 
 h1 {
@@ -65,10 +101,6 @@ h1 {
 
 h5 {
     margin: 5px;
-}
-
-main {
-    width: 100vw;
 }
 
 #message-and-gameboard {
@@ -93,16 +125,11 @@ main {
     align-items: center;
 }
 
-
 #gameboard div {
     height: 100%;
     width: 100%;
     background: #EFEFEF;
     border: 1px solid white;
-}
-
-.highlight-square {
-    border: 1px solid #E14658;
 }
 
 #gameboard {
@@ -118,80 +145,80 @@ main {
                          5a 5b 5c 5d 5e;
 }
 
-#1a {
-    grid-area: 1a
+#square1 {
+    grid-area: 1a;
 }
-#1b {
-    grid-area: 1b
+#square2 {
+    grid-area: 1b;
 }
-#1c {
-    grid-area: 1c
+#square3 {
+    grid-area: 1c;
 }
-#1d {
-    grid-area: 1d
+#square4 {
+    grid-area: 1d;
 }
-#1e {
-    grid-area: 1e
+#square5 {
+    grid-area: 1e;
 }
-#2a {
-    grid-area: 2a
+#square6 {
+    grid-area: 2a;
 }
-#2b {
-    grid-area: 2b
+#square7 {
+    grid-area: 2b;
 }
-#2c {
-    grid-area: 2c
+#square8 {
+    grid-area: 2c;
 }
-#2d {
-    grid-area: 2d
+#square9 {
+    grid-area: 2d;
 }
-#2e {
-    grid-area: 2e
+#square10 {
+    grid-area: 2e;
 }
-#3a {
-    grid-area: 3a
+#square11 {
+    grid-area: 3a;
 }
-#3b {
-    grid-area: 3b
+#square12 {
+    grid-area: 3b;
 }
-#3c {
-    grid-area: 3c
+#square13 {
+    grid-area: 3c;
 }
-#3d {
-    grid-area: 3d
+#square14 {
+    grid-area: 3d;
 }
-#3e {
-    grid-area: 3e
+#square15 {
+    grid-area: 3e;
 }
-#4a {
-    grid-area: 4a
+#square16 {
+    grid-area: 4a;
 }
-#4b {
-    grid-area: 4b
+#square17 {
+    grid-area: 4b;
 }
-#4c {
-    grid-area: 4c
+#square18 {
+    grid-area: 4c;
 }
-#4d {
-    grid-area: 4d
+#square19 {
+    grid-area: 4d;
 }
-#4e {
-    grid-area: 4e
+#square20 {
+    grid-area: 4e;
 }
-#5a {
-    grid-area: 5a
+#square21 {
+    grid-area: 5a;
 }
-#5b {
-    grid-area: 5b
+#square22 {
+    grid-area: 5b;
 }
-#5c {
-    grid-area: 5c
+#square23 {
+    grid-area: 5c;
 }
-#5d {
-    grid-area: 5d
+#square24 {
+    grid-area: 5d;
 }
-#5e {
-    grid-area: 5e
+#square25 {
+    grid-area: 5e;
 }
 
 #playerboard {

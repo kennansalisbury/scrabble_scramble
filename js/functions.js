@@ -16,19 +16,6 @@ const updateMessage = (messageHTML, buttonHTML) => {
     }
 }
 
-const addGameButtonEventListeners = () => {
-    document.getElementById('play-btn').addEventListener('click', confirmPlay)
-    document.getElementById('recall-btn').addEventListener('click', recallTiles)
-    document.getElementById('pass-btn').addEventListener('click', confirmPass)
-}
-
-const removeGameButtonEventListeners = () => {
-    document.getElementById('play-btn').removeEventListener('click', confirmPlay)
-    document.getElementById('recall-btn').removeEventListener('click', recallTiles)
-    document.getElementById('pass-btn').removeEventListener('click', confirmPass)
-}
-
-
 let randomIndex
 let vowelIndices = [0, 4, 8, 14, 20]
 let randomVowel
@@ -45,12 +32,10 @@ const randomTiles = () => {
             playerTiles.push(allTiles[randomIndex])
         }  
     }
-    console.log(playerTiles)
     
 }
 
 const createPlayerTiles = () => {
-
         //loop through playerTiles
         for (let i=0; i < playerTiles.length; i++) {
         //access image url & create new image element for each
@@ -133,9 +118,44 @@ const timerCountdown = () => {
     }
 }
 
+const addGameButtonEventListeners = () => {
+    document.getElementById('play-btn').addEventListener('click', confirmPlay)
+    document.getElementById('recall-btn').addEventListener('click', recallTiles)
+    document.getElementById('pass-btn').addEventListener('click', confirmPass)
+
+    //reapply css if not already there
+    document.getElementById('play-btn').setAttribute('class', 'smallbutton')
+    document.getElementById('recall-btn').setAttribute('class', 'smallbutton')
+    document.getElementById('pass-btn').setAttribute('class', 'smallbutton')
+}
+
+const removeGameButtonEventListeners = () => {
+    document.getElementById('play-btn').removeEventListener('click', confirmPlay)
+    document.getElementById('recall-btn').removeEventListener('click', recallTiles)
+    document.getElementById('pass-btn').removeEventListener('click', confirmPass)
+
+    //gray out and remove hover/click styles
+    document.getElementById('play-btn').setAttribute('class', 'smallbutton-disable')
+    document.getElementById('recall-btn').setAttribute('class', 'smallbutton-disable')
+    document.getElementById('pass-btn').setAttribute('class', 'smallbutton-disable')
+}
+
+const updateScoreBoard = () => {
+    document.getElementById(`p${currentPlayer}-scoreboard`).textContent = `Player ${currentPlayer}`
+    document.getElementById(`p${currentPlayer}-scoreboard`).style.background = "#E14658"
+    document.getElementById(`p${currentPlayer}-scoreboard`).style.color = "white"
+    document.getElementById(`p${currentPlayer}-scoreboard`).style.display = "inline-block"
+    document.getElementById(`p${currentPlayer}-scoreboard`).style.padding = "1px"
+
+}
+
+const highlightPlayableSquares = () => {
+    for (let i = 11; i < 16; i++){
+        document.getElementById(`square${i}`).style.background = "#CAEBF2"
+    }
+}
 
 const recallTiles = () => {
-    console.log('this will recall tiles')
     
     resetTiles()
 
@@ -174,7 +194,7 @@ const backToTurnScreen = () => {
 
 //set up drag & drop functions, add draggable attributes to tiles, and add droppable attributes to game squares
 
-//when drag begins, set data being transfered to be the img src
+//when drag begins, set data being transfered to be the img id
 const drag = e => {
     // console.log(e)
     e.dataTransfer.setData("text", e.target.id)
@@ -182,7 +202,7 @@ const drag = e => {
     e.target.style.border = '1px solid #E14658'
 
     //add drop attributes to parent element so another tile can be dropped in square if tile is moved out of it
-    e.path[0].parentNode.style.background = "#EFEFEF"
+    e.path[0].parentNode.style.background = "#CAEBF2"
     e.path[0].parentNode.setAttribute('ondragover', 'allowDrop(event)')
     e.path[0].parentNode.setAttribute('ondrop', 'drop(event)')
     e.path[0].parentNode.setAttribute('ondragenter', 'dragEnter(event)')
@@ -207,7 +227,7 @@ const dragEnter = e => {
 }
 
 const dragLeave = e => {
-    e.target.style.background = "#EFEFEF"
+    e.target.style.background = "#CAEBF2"
 }
 
 //when dropped:
@@ -215,25 +235,28 @@ const drop = e => {
     console.log(e)
     console.log(e.path[0].children[0])
 
-    e.target.style.background = "#EFEFEF"
+    e.target.style.background = "#CAEBF2"
+
+    //play click sound
+    document.getElementById('drop-sound').play()
     
     //only if there is not already a tile image there
     if (!e.target.contains(document.querySelector('img'))) {
     
-    //need to also prevent default so data can be transferred
-    e.preventDefault()
+        //need to also prevent default so data can be transferred
+        e.preventDefault()
 
-    //tell the item being dropped in that it should get the data set for transfer on the draggable element
-    let data = e.dataTransfer.getData("text")
+        //tell the item being dropped in that it should get the data set for transfer on the draggable element
+        let data = e.dataTransfer.getData("text")
 
-    //append the draggable element's data to the droppable element
-    e.target.appendChild(document.getElementById(data))
-    document.getElementById(data).style.height = "100%"
-    document.getElementById(data).style.width = "100%"
-    document.getElementById(data).style.border = ''
+        //append the draggable element's data to the droppable element
+        e.target.appendChild(document.getElementById(data))
+        document.getElementById(data).style.height = "100%"
+        document.getElementById(data).style.width = "100%"
+        document.getElementById(data).style.border = ''
 
-    //remove attribute to allow drops
-    e.target.setAttribute('ondrop', '')
+        //remove attribute to allow drops
+        e.target.setAttribute('ondrop', '')
     }
 }
 
@@ -248,39 +271,36 @@ const dragDropSetup = () => {
         
     }
     //add attributes to squares to allow a drop and tell it what to do when something is dropped on it
-    document.getElementById('3a').setAttribute('ondragover', 'allowDrop(event)')
-    document.getElementById('3b').setAttribute('ondragover', 'allowDrop(event)')
-    document.getElementById('3c').setAttribute('ondragover', 'allowDrop(event)')
-    document.getElementById('3d').setAttribute('ondragover', 'allowDrop(event)')
-    document.getElementById('3e').setAttribute('ondragover', 'allowDrop(event)')
-    
-    document.getElementById('3a').setAttribute('ondrop', 'drop(event)')
-    document.getElementById('3b').setAttribute('ondrop', 'drop(event)')
-    document.getElementById('3c').setAttribute('ondrop', 'drop(event)')
-    document.getElementById('3d').setAttribute('ondrop', 'drop(event)')
-    document.getElementById('3e').setAttribute('ondrop', 'drop(event)')
-
-    document.getElementById('3a').setAttribute('ondragenter', 'dragEnter(event)')
-    document.getElementById('3b').setAttribute('ondragenter', 'dragEnter(event)')
-    document.getElementById('3c').setAttribute('ondragenter', 'dragEnter(event)')
-    document.getElementById('3d').setAttribute('ondragenter', 'dragEnter(event)')
-    document.getElementById('3e').setAttribute('ondragenter', 'dragEnter(event)')
-
-    document.getElementById('3a').setAttribute('ondragleave', 'dragLeave(event)')
-    document.getElementById('3b').setAttribute('ondragleave', 'dragLeave(event)')
-    document.getElementById('3c').setAttribute('ondragleave', 'dragLeave(event)')
-    document.getElementById('3d').setAttribute('ondragleave', 'dragLeave(event)')
-    document.getElementById('3e').setAttribute('ondragleave', 'dragLeave(event)')
-
-    //add attributes to tileboard divs to allow a drop etc. so that if they drag a tile and then drop it back it will not give error and will reset tile border
-
-    for (let i=0; i < TILE_BOARD.length; i++) {
-        let currentTileboardDiv = document.querySelector(`#tileboard .tile${i}`)
-        currentTileboardDiv.setAttribute('ondragover', 'allowDrop(event)')
-        currentTileboardDiv.setAttribute('ondrop', 'drop(event)')
-        currentTileboardDiv.setAttribute('ondragenter', 'dragEnter(event)')
-        currentTileboardDiv.setAttribute('ondragleave', 'dragLeave(event)')
+    for (let i = 11; i < 16; i++) {
+        document.getElementById(`square${i}`).setAttribute('ondragover', 'allowDrop(event)')
+        document.getElementById(`square${i}`).setAttribute('ondrop', 'drop(event)')
+        document.getElementById(`square${i}`).setAttribute('ondragenter', 'dragEnter(event)')
+        document.getElementById(`square${i}`).setAttribute('ondragleave', 'dragLeave(event)')
     }
+    
+    // document.getElementById('3a').setAttribute('ondragover', 'allowDrop(event)')
+    // document.getElementById('3b').setAttribute('ondragover', 'allowDrop(event)')
+    // document.getElementById('3c').setAttribute('ondragover', 'allowDrop(event)')
+    // document.getElementById('3d').setAttribute('ondragover', 'allowDrop(event)')
+    // document.getElementById('3e').setAttribute('ondragover', 'allowDrop(event)')
+    
+    // document.getElementById('3a').setAttribute('ondrop', 'drop(event)')
+    // document.getElementById('3b').setAttribute('ondrop', 'drop(event)')
+    // document.getElementById('3c').setAttribute('ondrop', 'drop(event)')
+    // document.getElementById('3d').setAttribute('ondrop', 'drop(event)')
+    // document.getElementById('3e').setAttribute('ondrop', 'drop(event)')
+
+    // document.getElementById('3a').setAttribute('ondragenter', 'dragEnter(event)')
+    // document.getElementById('3b').setAttribute('ondragenter', 'dragEnter(event)')
+    // document.getElementById('3c').setAttribute('ondragenter', 'dragEnter(event)')
+    // document.getElementById('3d').setAttribute('ondragenter', 'dragEnter(event)')
+    // document.getElementById('3e').setAttribute('ondragenter', 'dragEnter(event)')
+
+    // document.getElementById('3a').setAttribute('ondragleave', 'dragLeave(event)')
+    // document.getElementById('3b').setAttribute('ondragleave', 'dragLeave(event)')
+    // document.getElementById('3c').setAttribute('ondragleave', 'dragLeave(event)')
+    // document.getElementById('3d').setAttribute('ondragleave', 'dragLeave(event)')
+    // document.getElementById('3e').setAttribute('ondragleave', 'dragLeave(event)')
 }
 
 const dragDropOff = () => {
@@ -331,12 +351,14 @@ const fetchAPI = (url) => {
     .then(response => response.json()) //translates JSON into javascript object
     .then(data => {
 
-     if(data[0].meta) {  //if fetch returns an array whose first index is an object called meta, it's true and should move to correctword function
-        correctWord()
-       }
-       else {  //else it is false and should move to incorrect word (if not a word, data comes back just 1 single array of words that are similar to the input word)
-        incorrectWord()
-       }
+        if(data[0].meta && data[0].fl != "abbreviation" && data[0].fl != "biographical name") {  //if fetch returns an array whose first index is an object called meta, it's true and should move to correctword function
+        
+            correctWord()
+        }
+        else {  //else it is false and should move to incorrect word (if not a word, data comes back just 1 single array of words that are similar to the input word)
+            
+            incorrectWord()
+        }
     })
     .catch(err => {
         console.log('error', err)

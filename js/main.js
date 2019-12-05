@@ -5,8 +5,8 @@ const startGame = () => {
     //show header
     showHideElement(document.querySelector('header'), 'show')
 
-    //show quit button
-    QUIT_BUTTON.setAttribute('class', 'smallbutton')
+    //set button class on quit button to show
+    document.getElementById('quit-btn').setAttribute('class', 'smallbutton')
 
     //show empty tile board
     showHideElement(TILE_BOARD, 'show')
@@ -16,11 +16,9 @@ const startGame = () => {
     updateMessage(playerReadyMessage, playerReadyButton)
     MESSAGE_BOARD.style.background = '#EFEFEF'
     MESSAGE_BOARD.style.color = 'black'
-
-    //choose 5 random tiles  
-    randomTiles()
     
-    //add tile images to tileboard (hidden)
+    //choose 5 random tiles & add tile images to tileboard (hidden)
+    randomTiles()
     createPlayerTiles()
 
     //add event listener to player ready button
@@ -32,7 +30,7 @@ document.getElementById('start-btn').addEventListener('click', startGame)
 
 const playerTurn = () => {
 
-    //if there is no interval set
+    //if there is no interval set, set interval
     if (!interval || (currentPlayer === 2 && !interval)) {
         interval = setInterval(timerCountdown, INTERVAL_TIME)
     }
@@ -40,7 +38,7 @@ const playerTurn = () => {
     //show tiles
     showTiles()
     
-    //show buttons
+    //show gameplay buttons
     showHideElement(GAME_BUTTONS, 'show')
 
     //add click event listeners to game buttons
@@ -48,11 +46,8 @@ const playerTurn = () => {
 
     //show scoreboard w/ currentPlayer
     showHideElement(SCORE_BOARD, 'show')
-    document.getElementById(`p${currentPlayer}-scoreboard`).textContent = `Player ${currentPlayer}`
-    document.getElementById(`p${currentPlayer}-scoreboard`).style.background = "#E14658"
-    document.getElementById(`p${currentPlayer}-scoreboard`).style.color = "white"
-    document.getElementById(`p${currentPlayer}-scoreboard`).style.display = "inline-block"
-    document.getElementById(`p${currentPlayer}-scoreboard`).style.padding = "1px"
+    updateScoreBoard()
+
     TIMER_ON_SCOREBOARD.textContent = `Time Remaining: ${timer}`
     TIMER_ON_SCOREBOARD.style.fontSize = '15px'
 
@@ -61,17 +56,14 @@ const playerTurn = () => {
     updateMessage(playerPlayMessage)
 
     //highlight the middle squares on board
-    document.getElementById('3a').style.border = "1px solid #E14658"
-    document.getElementById('3b').style.border = "1px solid #E14658"
-    document.getElementById('3c').style.border = "1px solid #E14658"
-    document.getElementById('3d').style.border = "1px solid #E14658"
-    document.getElementById('3e').style.border = "1px solid #E14658"
+    highlightPlayableSquares()
 
     //dragDropSetup()
     dragDropSetup()
 }
 
 const confirmPass = () => {
+    
     //turn drag & drop off
     dragDropOff()
     
@@ -81,6 +73,7 @@ const confirmPass = () => {
     
     //remove click event listeners from game buttons
     removeGameButtonEventListeners()
+    
 
     //add event listeners to confirm button, on click playerTurn
     document.getElementById('yes').addEventListener('click', () => {
@@ -194,11 +187,11 @@ const playTiles = (player) => {
 
             //FOR TESTING ONLY:
 
-            fetchTESTAPI(FETCH_TEST_URL)
+            // fetchTESTAPI(FETCH_TEST_URL)
 
             //REALAPI:
 
-            // fetchAPI(apiURL)
+            fetchAPI(apiURL)
 
             // console.log('waiting on data')
         }
@@ -215,15 +208,9 @@ const playTiles = (player) => {
 }
 
 const correctWord = (player) => {
-    console.log('correct word')
-    console.log(playedTilesPlayerObjects)
 
-    // if (player === 1) {
-    //     playerScore = player1Score
-    // }
-    // else {
-    //     playerScore = player2Score
-    // }
+    //play sound
+    document.getElementById('correct-word-sound').play()
 
     //tally points in played tiles array and save in global variable for comparing at results
     let total = 0
@@ -232,7 +219,6 @@ const correctWord = (player) => {
     })
     playerScore = total
     console.log(playerScore)
-
 
     //update message to correct word message with button to pass to next player
     addCurrentPlayer(currentPlayer)
@@ -255,6 +241,9 @@ const correctWord = (player) => {
 
 
 const incorrectWord = () => {
+    //play sound
+    document.getElementById('incorrect-word-sound').play()
+
     //set playerscore to 0
     playerScore = 0
 

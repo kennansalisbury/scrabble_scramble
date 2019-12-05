@@ -53,7 +53,7 @@ if (player === 1) {
    
     playerPlayMessage = `
         <h4>Player ${player}, you're up!</h4>
-        <p>Drag & drop tiles onto the outlined board squares to create a word.</p>
+        <p>Drag & drop tiles onto the highlighted board squares to create a word.</p>
         <br>
         <p>“Recall” brings all of your tiles back from the board.</p>
         <br>
@@ -72,7 +72,7 @@ if (player === 1) {
 else {
     playerPlayMessage =`
         <h4>Player ${player}, you're up!</h4>
-        <p>Drag & drop tiles onto the outlined board squares to create a word.</p>
+        <p>Drag & drop tiles onto the highlighted board squares to create a word.</p>
         <br>
         <p>“Recall” brings all of your tiles back from the board.</p>
         <br>
