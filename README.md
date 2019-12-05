@@ -6,6 +6,7 @@ Scrambble is a one-round, time restricted word game in which 2 players compete t
 
 Click [HERE](https://kennansalisbury.github.io/scrabble_scramble/) to play.
 
+
 ## HOW IT WORKS
 
 A random set of 5 tiles is created, and both players are working from this same set of tiles. Each player can play a word or pass their turn if they cannot come up with a word.
@@ -22,8 +23,10 @@ Also - players will receive an error if attempting to play tiles with empty spac
 
 Once both players have played, the game will reveal who won - including the words played (if applicable) and the points received by each player.
 
+
 ## TECHNOLOGIES USED
 HTML, Materialize, CSS, JavaScript
+
 
 HTML was used for the basic structure, which is mostly empty containers to be utilized by the JavaScript DOM manipulation. 
 
