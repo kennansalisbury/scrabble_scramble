@@ -83,7 +83,7 @@ for (let i = 0; i < letters.length; i++) {
     else {
         points = 1
     }
-    let img = `file:///Users/kennansalisbury/sei28/unit_1/projects/scrabble_scramble/assets/img/letter${letters[i]}.png`
+    let img = `./assets/img/letter${letters[i]}.png`
     if (letters[i] === 'A' || letters[i] === 'E' || letters[i] === 'I' || letters[i] === 'O' || letters[i] === 'U') {
         vowel = 'true'
     }
