@@ -1,5 +1,4 @@
 //Welcome message
-
 welcomeMessage = `
 <h1>SCRAMBBLE</h1>
 <p>It's a Scrabble Scramble!</p>

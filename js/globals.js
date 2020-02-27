@@ -1,5 +1,6 @@
+//*** DRY CODE UPDATE: CREATE GAMEBOARD DIVS - MAKE IDS LOOPABLE
+
 //CONSTANTS
-const FETCH_TEST_URL = 'https://pokeapi.co/api/v2/pokemon/ditto/'
 const INTERVAL_TIME = 1000
 const NUMBER_TILES_PER_PLAYER = 5
 const START_TIME = 30
@@ -18,7 +19,7 @@ const TIMER_ON_SCOREBOARD = document.getElementById('timer-section')
 
 
 //global variables
-let allTiles = []
+let allTiles = [] //set array of tiles at bottom of file
 let apiURL
 let currentPlayer = 1
 let interval
@@ -60,8 +61,11 @@ class tile {
     }
 }
 
-
+//loop through letters and create new tile for each
 for (let i = 0; i < letters.length; i++) {
+    
+    //***DRY CODE UPDATE: Switch statement
+    //set points based on letters
     if (letters[i] === 'Q' || letters[i] === 'Z') {
         points = 10
     }
@@ -83,12 +87,18 @@ for (let i = 0; i < letters.length; i++) {
     else {
         points = 1
     }
+
+    //set img of tile
     let img = `./assets/img/letter${letters[i]}.png`
+
+    //set whether a vowel or not
     if (letters[i] === 'A' || letters[i] === 'E' || letters[i] === 'I' || letters[i] === 'O' || letters[i] === 'U') {
         vowel = 'true'
     }
     else {
         vowel = 'false'
     }
+
+    //create new array of objects
     allTiles.push(new tile(letters[i], points, img, vowel))
 }

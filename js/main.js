@@ -1,8 +1,10 @@
 updateMessage(welcomeMessage)
 
+//**** DRY CODE UPDATE: for functions, decide if passing in player arg and make consistent
+
 const startGame = () => {
 
-    //show header
+    //show headers
     showHideElement(document.querySelector('header'), 'show')
 
     //show quit button
@@ -14,6 +16,8 @@ const startGame = () => {
     //update messageboard to "player 1 up" message and "draw tiles" button 
     addCurrentPlayer(currentPlayer)
     updateMessage(playerReadyMessage, playerReadyButton)
+
+    //***DRY CODE UPDATE: create css class, make this one line
     MESSAGE_BOARD.style.background = '#EFEFEF'
     MESSAGE_BOARD.style.color = 'black'
 
@@ -48,11 +52,15 @@ const playerTurn = () => {
 
     //show scoreboard w/ currentPlayer
     showHideElement(SCORE_BOARD, 'show')
+
+    //***DRY CODE UPDATE: create css class for below styles, then just one line of setting class
     document.getElementById(`p${currentPlayer}-scoreboard`).textContent = `Player ${currentPlayer}`
     document.getElementById(`p${currentPlayer}-scoreboard`).style.background = "#E14658"
     document.getElementById(`p${currentPlayer}-scoreboard`).style.color = "white"
     document.getElementById(`p${currentPlayer}-scoreboard`).style.display = "inline-block"
     document.getElementById(`p${currentPlayer}-scoreboard`).style.padding = "1px"
+    
+    //***DRY CODE UPDATE: create css class for below styles, then just one line of setting class
     TIMER_ON_SCOREBOARD.textContent = `Time Remaining: ${timer}`
     TIMER_ON_SCOREBOARD.style.fontSize = '15px'
 
@@ -97,7 +105,6 @@ const confirmPass = () => {
 
     if (currentPlayer === 1) {
         playedWordP1 = 'Passed Turn'
-        
     }
     else {
         playedWordP2 = 'Passed Turn'
@@ -125,9 +132,7 @@ const confirmPlay = () => {
 
 }
 
-const playTiles = (player) => {
-    console.log('play tiles')
-
+const playTiles = player => {
     //clear arrays
     playedTilesPlayer
     playedWordPlayer
@@ -144,7 +149,7 @@ const playTiles = (player) => {
         playedWordPlayer = playedWordP2
     }
 
-    //MVP - push from left to right the object data that is in each square to an array - array should be global and specific to player 1 so that we can tally points in correctWord function
+    //push from left to right the object data that is in each square to an array - array should be global and specific to player 1 so that we can tally points in correctWord function
     //loop through GAME_BOARD_DIV_NODES 
         // console.log(GAME_BOARD_DIV_NODES)
         // console.log(GAME_BOARD_DIV_NODES[10].childNodes[0].src)
@@ -162,8 +167,8 @@ const playTiles = (player) => {
                 playedTilesPlayer.push('')
             }
         }
-        console.log(playedTilesPlayer)
-        console.log(playedTilesPlayerObjects)
+        // console.log(playedTilesPlayer)
+        // console.log(playedTilesPlayerObjects)
 
         let playedLetters = []
         
@@ -174,7 +179,6 @@ const playTiles = (player) => {
         }
         //if there are no letters, no letters here error message
         else if (playedTilesPlayer.every(el => el === '')) {
-            console.log('no letters error')
             updateMessage(noLettersPlayedError, goBackButton)
             document.getElementById('goBack').addEventListener('click', backToTurnScreen)
         }
@@ -186,24 +190,11 @@ const playTiles = (player) => {
             playedLetters = playedTilesPlayer.filter(el => el !== '')
             //convert to string - save to variable
             playedWordPlayer = playedLetters.join('')
-            console.log(playedLetters)
-            console.log(playedWordPlayer)
             //add to api URL
-            apiURL = `https://dictionaryapi.com/api/v3/references/collegiate/json/${playedWordPlayer}?key=7cb66aa0-7487-4666-92aa-393636fd82d9`
-            console.log(apiURL)
-
-            //FOR TESTING ONLY:
-
-            // fetchTESTAPI(FETCH_TEST_URL)
-
-            //REALAPI:
-
-            fetchAPI(apiURL)
-
-            // console.log('waiting on data')
+            fetchAPI(`https://dictionaryapi.com/api/v3/references/collegiate/json/${playedWordPlayer}?key=${process.env.API_KEY}`)
         }
         
-        //set value of playedWordPlayer back to global playedWordP1 or P2
+        //set value of playedWordPlayer back to global playedWord P1 or P2
         if (player === 1) {
             playedWordP1 = playedWordPlayer
         }
@@ -214,16 +205,7 @@ const playTiles = (player) => {
 
 }
 
-const correctWord = (player) => {
-    console.log('correct word')
-    console.log(playedTilesPlayerObjects)
-
-    // if (player === 1) {
-    //     playerScore = player1Score
-    // }
-    // else {
-    //     playerScore = player2Score
-    // }
+const correctWord = () => {
 
     //tally points in played tiles array and save in global variable for comparing at results
     let total = 0
@@ -231,7 +213,6 @@ const correctWord = (player) => {
         total += object.points
     })
     playerScore = total
-    console.log(playerScore)
 
 
     //update message to correct word message with button to pass to next player
@@ -283,11 +264,12 @@ const nextPlayerScreen = () => {
     timer = START_TIME
     
     currentPlayer += 1
-    console.log('Player', currentPlayer, 'you are up')
 
     //hide scoreboard
     //update scoreboard to Player 2
     showHideElement(SCORE_BOARD, 'hide')
+
+    //*** DRY CODE UPDATE: create CSS class and make this one line
     document.getElementById(`p${currentPlayer - 1}-scoreboard`).textContent = `Player ${currentPlayer - 1}`
     document.getElementById(`p${currentPlayer - 1}-scoreboard`).style.color = "black"
     document.getElementById(`p${currentPlayer - 1}-scoreboard`).style.background = ""
@@ -314,8 +296,6 @@ const nextPlayerScreen = () => {
 }
 
 const showResults = () => {
-    console.log('show results')
-
     //message that includes who won, each player's points and word played
     populateResults(playedWordP1, playedWordP2)
 

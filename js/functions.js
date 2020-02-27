@@ -1,3 +1,5 @@
+//** DRY CODE UPDATE: ternaries
+
 const showHideElement = (element, showhide) => {
     if (showhide === 'show') {
         element.style.display = "inline-block"
@@ -33,7 +35,7 @@ let randomIndex
 let vowelIndices = [0, 4, 8, 14, 20]
 let randomVowel
 const randomTiles = () => {
-
+    //randomly select tiles for the players, making the first tile always a vowel
     for (let i = 0; i < NUMBER_TILES_PER_PLAYER; i++) {
         if (i === 0) {
             randomIndex = Math.floor(Math.random() * vowelIndices.length)
@@ -45,7 +47,6 @@ const randomTiles = () => {
             playerTiles.push(allTiles[randomIndex])
         }  
     }
-    console.log(playerTiles)
     
 }
 
@@ -58,17 +59,12 @@ const createPlayerTiles = () => {
             tileImage.setAttribute('id', `tile${i}`)
             tileImage.setAttribute('src', `${playerTiles[i].img}`)
             document.querySelector(`.tile${i}`).appendChild(tileImage)
-            // showHideElement(tileImage, 'show')
         }
 
 }
 
+//** DRY CODE UPDATE: move code from this function to main.js
 const hideTiles = () => {
-    //loop through player tiles and hide
-    // for (let i = 0; i < NUMBER_TILES_PER_PLAYER; i++) {
-    //     showHideElement(document.getElementById(`tile${i}`), 'hide')
-    // }
-
     //hide tileboard
     showHideElement(TILE_BOARD, 'hide')
 }
@@ -115,14 +111,12 @@ const timesUp = () => {
 }
 
 const timerCountdown = () => {
-    console.log('tick')
     timer -= 1
     TIMER_ON_SCOREBOARD.textContent = `Time Remaining: ${timer}`
     TIMER_ON_SCOREBOARD.style.color = 'black'
 
     if (timer === 0) {
         timesUp()
-        console.log('time up!')
     }
     else if (timer === 10) {
         TIMER_ON_SCOREBOARD.style.fontSize = '20px'
@@ -134,16 +128,13 @@ const timerCountdown = () => {
 }
 
 
-const recallTiles = () => {
-    console.log('this will recall tiles')
-    
+const recallTiles = () => {    
     resetTiles()
-
     playerTurn()
 }
 
 const resetTiles = () => {
-    console.log('this will clear game board and remove event listeners')
+    //clear game and tile board
     
         //clear tiles from gameboard
         for (let i = 10; i < GAME_BOARD_DIV_NODES.length-10; i++) {
@@ -166,22 +157,21 @@ const resetTiles = () => {
 
 const backToTurnScreen = () => {
     recallTiles()
-    
     addCurrentPlayer(currentPlayer)
     updateMessage(playerPlayMessage)
     addGameButtonEventListeners()
 }
 
-//set up drag & drop functions, add draggable attributes to tiles, and add droppable attributes to game squares
+//set up for drag & drop functions -- draggable attributes on tiles, droppable attributes on game squares
 
 //when drag begins, set data being transfered to be the img src
 const drag = e => {
-    // console.log(e)
     e.dataTransfer.setData("text", e.target.id)
     e.dataTransfer.dropEffect = "move"
     e.target.style.border = '1px solid #E14658'
 
     //add drop attributes to parent element so another tile can be dropped in square if tile is moved out of it
+    //*** DRY CODE UPDATE: string together
     e.path[0].parentNode.style.background = "#EFEFEF"
     e.path[0].parentNode.setAttribute('ondragover', 'allowDrop(event)')
     e.path[0].parentNode.setAttribute('ondrop', 'drop(event)')
@@ -202,44 +192,47 @@ const allowDrop = e => {
 }
 }
 
+//change droppable element background when element dragged over
 const dragEnter = e => {
     e.target.style.background = "#E14658"
 }
 
+//change droppable element background back to original if element drags out
 const dragLeave = e => {
     e.target.style.background = "#EFEFEF"
 }
 
 //when dropped:
 const drop = e => {
-    console.log(e)
-    console.log(e.path[0].children[0])
-
+    //change droppable element background back to regular background for if dropped element is moved again
     e.target.style.background = "#EFEFEF"
     
-    //only if there is not already a tile image there
+    //can only drop if there is not already a tile image there
     if (!e.target.contains(document.querySelector('img'))) {
     
-    //need to also prevent default so data can be transferred
-    e.preventDefault()
+        //need to also prevent default so data can be transferred
+        e.preventDefault()
 
-    //tell the item being dropped in that it should get the data set for transfer on the draggable element
-    let data = e.dataTransfer.getData("text")
+        //tell the item being dropped in that it should get the data set for transfer on the draggable element
+        let data = e.dataTransfer.getData("text")
 
-    //append the draggable element's data to the droppable element
-    e.target.appendChild(document.getElementById(data))
-    document.getElementById(data).style.height = "100%"
-    document.getElementById(data).style.width = "100%"
-    document.getElementById(data).style.border = ''
+        //append the draggable element's data to the droppable element
+        e.target.appendChild(document.getElementById(data))
 
-    //remove attribute to allow drops
-    e.target.setAttribute('ondrop', '')
+        //***DRY CODE UPDATE: set css class, make one line
+        document.getElementById(data).style.height = "100%"
+        document.getElementById(data).style.width = "100%"
+        document.getElementById(data).style.border = ''
+
+        //remove attribute that allow drops
+        e.target.setAttribute('ondrop', '')
     }
 }
 
 const dragDropSetup = () => {
     
     //loop through tiles and set draggable attribute to true for each tile
+     //*** DRY CODE UPDATE: string together
     for (let i=0; i < playerTiles.length; i++) {
         let currentTile = document.getElementById(`tile${i}`)
         currentTile.setAttribute('draggable', 'true')
@@ -248,6 +241,7 @@ const dragDropSetup = () => {
         
     }
     //add attributes to squares to allow a drop and tell it what to do when something is dropped on it
+    //*** DRY CODE UPDATE: once creation of divs is updated and ids are loopable, loop here to cull down code
     document.getElementById('3a').setAttribute('ondragover', 'allowDrop(event)')
     document.getElementById('3b').setAttribute('ondragover', 'allowDrop(event)')
     document.getElementById('3c').setAttribute('ondragover', 'allowDrop(event)')
@@ -273,7 +267,7 @@ const dragDropSetup = () => {
     document.getElementById('3e').setAttribute('ondragleave', 'dragLeave(event)')
 
     //add attributes to tileboard divs to allow a drop etc. so that if they drag a tile and then drop it back it will not give error and will reset tile border
-
+    //*** DRY CODE UPDATE: string together
     for (let i=0; i < TILE_BOARD.length; i++) {
         let currentTileboardDiv = document.querySelector(`#tileboard .tile${i}`)
         currentTileboardDiv.setAttribute('ondragover', 'allowDrop(event)')
@@ -285,6 +279,7 @@ const dragDropSetup = () => {
 
 const dragDropOff = () => {
     //loop through tiles and set draggable attribute to '' for each tile
+    //*** DRY CODE UPDATE: string together
     for (let i=0; i < playerTiles.length; i++) {
         let currentTile = document.getElementById(`tile${i}`)
         currentTile.setAttribute('draggable', 'false')
@@ -297,38 +292,19 @@ const dragDropOff = () => {
 
 const checkForIllegalSpaces = () => {
     for (let i = 0; i < playedTilesPlayer.length; i++) {
-        //if playedTilesPlayer[i] is an empty string (it is false, so ! will return true) AND playedTilesPlayer[i-1] has a letter AND playedTilesPlayer[i+1] or i+2 or i+3 has a letter
+        //if playedTilesPlayer[i] is an empty string AND playedTilesPlayer[i-1] has a letter AND playedTilesPlayer[i+1] or i+2 or i+3 has a letter
         if (!playedTilesPlayer[i] && playedTilesPlayer[i-1] && (playedTilesPlayer[i+1] || playedTilesPlayer[i+2] || playedTilesPlayer[i+3])) {
             return true
         }
     }
 }
 
-// FOR TESTING ONLY, real API fetch below commented out
-
-const fetchTESTAPI = (url) => {
-    
-    fetch(url)
-    .then(response => response.json()) //translates JSON into javascript object
-    .then(data => {
-
-     if(data) {  //if fetch returns data
-        correctWord()
-       }
-    })
-    .catch(err => {
-        console.log('error', err)
-        incorrectWord()
-    })
-}
-
-
 //REAL API
 
 const fetchAPI = (url) => {
     
     fetch(url)
-    .then(response => response.json()) //translates JSON into javascript object
+    .then(response => response.json())
     .then(data => {
 
      if(data[0].meta) {  //if fetch returns an array whose first index is an object called meta, it's true and should move to correctword function
@@ -340,7 +316,6 @@ const fetchAPI = (url) => {
     })
     .catch(err => {
         console.log('error', err)
-        //error message
     })
 }
 
