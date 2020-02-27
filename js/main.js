@@ -7,8 +7,8 @@ const startGame = () => {
     //show headers
     showHideElement(document.querySelector('header'), 'show')
 
-    //show quit button
-    QUIT_BUTTON.setAttribute('class', 'smallbutton')
+    //set button class on quit button to show
+    document.getElementById('quit-btn').setAttribute('class', 'smallbutton')
 
     //show empty tile board
     showHideElement(TILE_BOARD, 'show')
@@ -20,11 +20,9 @@ const startGame = () => {
     //***DRY CODE UPDATE: create css class, make this one line
     MESSAGE_BOARD.style.background = '#EFEFEF'
     MESSAGE_BOARD.style.color = 'black'
-
-    //choose 5 random tiles  
-    randomTiles()
     
-    //add tile images to tileboard (hidden)
+    //choose 5 random tiles & add tile images to tileboard (hidden)
+    randomTiles()
     createPlayerTiles()
 
     //add event listener to player ready button
@@ -36,7 +34,7 @@ document.getElementById('start-btn').addEventListener('click', startGame)
 
 const playerTurn = () => {
 
-    //if there is no interval set
+    //if there is no interval set, set interval
     if (!interval || (currentPlayer === 2 && !interval)) {
         interval = setInterval(timerCountdown, INTERVAL_TIME)
     }
@@ -44,7 +42,7 @@ const playerTurn = () => {
     //show tiles
     showTiles()
     
-    //show buttons
+    //show gameplay buttons
     showHideElement(GAME_BUTTONS, 'show')
 
     //add click event listeners to game buttons
@@ -52,34 +50,33 @@ const playerTurn = () => {
 
     //show scoreboard w/ currentPlayer
     showHideElement(SCORE_BOARD, 'show')
+    updateScoreBoard()
 
-    //***DRY CODE UPDATE: create css class for below styles, then just one line of setting class
-    document.getElementById(`p${currentPlayer}-scoreboard`).textContent = `Player ${currentPlayer}`
-    document.getElementById(`p${currentPlayer}-scoreboard`).style.background = "#E14658"
-    document.getElementById(`p${currentPlayer}-scoreboard`).style.color = "white"
-    document.getElementById(`p${currentPlayer}-scoreboard`).style.display = "inline-block"
-    document.getElementById(`p${currentPlayer}-scoreboard`).style.padding = "1px"
-    
-    //***DRY CODE UPDATE: create css class for below styles, then just one line of setting class
+    //show timer
+    showHideElement(TIMER_ON_SCOREBOARD, 'show')
     TIMER_ON_SCOREBOARD.textContent = `Time Remaining: ${timer}`
     TIMER_ON_SCOREBOARD.style.fontSize = '15px'
-
+    
     //update message
     addCurrentPlayer(currentPlayer)
     updateMessage(playerPlayMessage)
 
     //highlight the middle squares on board
-    document.getElementById('3a').style.border = "1px solid #E14658"
-    document.getElementById('3b').style.border = "1px solid #E14658"
-    document.getElementById('3c').style.border = "1px solid #E14658"
-    document.getElementById('3d').style.border = "1px solid #E14658"
-    document.getElementById('3e').style.border = "1px solid #E14658"
+    highlightPlayableSquares()
 
     //dragDropSetup()
     dragDropSetup()
 }
 
+const recallTiles = () => {
+    
+    resetTiles()
+
+    playerTurn()
+}
+
 const confirmPass = () => {
+    
     //turn drag & drop off
     dragDropOff()
     
@@ -89,8 +86,8 @@ const confirmPass = () => {
     
     //remove click event listeners from game buttons
     removeGameButtonEventListeners()
-
-    //add event listeners to confirm button, on click playerTurn
+    
+    //add event listeners to confirm button, on click if Player 1 go to next player ready screen or if Player 2 go on to show results
     document.getElementById('yes').addEventListener('click', () => {
         if (currentPlayer === 1) {
             nextPlayerScreen()
@@ -100,9 +97,10 @@ const confirmPass = () => {
         }
     })
 
-    //add event listener to no button 
+    //add event listener to no button, on click back to turn
     document.getElementById('no').addEventListener('click', backToTurnScreen)
 
+    //store message for showing on the results page in place of the player's "word"
     if (currentPlayer === 1) {
         playedWordP1 = 'Passed Turn'
     }
@@ -118,7 +116,7 @@ const confirmPlay = () => {
     //remove game button event listeners
     removeGameButtonEventListeners()
     
-    //update messageboard with confirmPlay message and add confirm button and nevermind button
+    //update messageboard with confirmPlay message and add yes & no buttons
     addCurrentPlayer(currentPlayer)
     updateMessage(confirmPlayMessage, yesNoButtons)
 
@@ -127,13 +125,13 @@ const confirmPlay = () => {
         playTiles(currentPlayer)
     })
 
-    //add event listener to nevermind button, on click 
+    //add event listener to no button, on click back to turn
     document.getElementById('no').addEventListener('click', backToTurnScreen)
 
 }
 
-const playTiles = player => {
-    //clear arrays
+const playTiles = (player) => {
+    //clear arrays if have tiles in them from another player
     playedTilesPlayer
     playedWordPlayer
     playedTilesP1 = []
@@ -149,63 +147,60 @@ const playTiles = player => {
         playedWordPlayer = playedWordP2
     }
 
-    //push from left to right the object data that is in each square to an array - array should be global and specific to player 1 so that we can tally points in correctWord function
+    //Push from left to right the object data that is in each square to an array - array should be global and specific to player 1 in order to tally points in correctWord function
     //loop through GAME_BOARD_DIV_NODES 
-        // console.log(GAME_BOARD_DIV_NODES)
-        // console.log(GAME_BOARD_DIV_NODES[10].childNodes[0].src)
-        // let object = playerTiles.find(obj => obj.img === GAME_BOARD_DIV_NODES[10].childNodes[0].src)
-        // console.log(object)
-
-        for (let i = 10; i < GAME_BOARD_DIV_NODES.length-10; i++) {
-           //if image in tile, take img source and push object that has matching img source to array
-            if (GAME_BOARD_DIV_NODES[i].hasChildNodes()) {
-                object = allTiles.find(obj => obj.img=== GAME_BOARD_DIV_NODES[i].childNodes[0].src) 
-                playedTilesPlayerObjects.push(object)
-                playedTilesPlayer.push(object.letter)
-            }
-            else {
-                playedTilesPlayer.push('')
-            }
-        }
-        // console.log(playedTilesPlayer)
-        // console.log(playedTilesPlayerObjects)
-
-        let playedLetters = []
-        
-        //if there is a square that has a letter on the square before it and a letter on the square after it, sorry, no spaces error message
-        if (checkForIllegalSpaces() === true) {
-            updateMessage(spaceBetweenLettersError, goBackButton)
-            document.getElementById('goBack').addEventListener('click', backToTurnScreen)    
-        }
-        //if there are no letters, no letters here error message
-        else if (playedTilesPlayer.every(el => el === '')) {
-            updateMessage(noLettersPlayedError, goBackButton)
-            document.getElementById('goBack').addEventListener('click', backToTurnScreen)
+    for (let i = 10; i < GAME_BOARD_DIV_NODES.length-10; i++) {
+        //if image in tile, take img source and push object that has matching img source to array
+        if (GAME_BOARD_DIV_NODES[i].hasChildNodes()) {
+            object = allTiles.find(obj => obj.img=== GAME_BOARD_DIV_NODES[i].childNodes[0].attributes[1].value) 
+            playedTilesPlayerObjects.push(object)
+            playedTilesPlayer.push(object.letter)
         }
         else {
-            //clear interval
-            clearInterval(interval)
-            timer = START_TIME
-            //remove empty strings
-            playedLetters = playedTilesPlayer.filter(el => el !== '')
-            //convert to string - save to variable
-            playedWordPlayer = playedLetters.join('')
-            //add to api URL
-            fetchAPI(`https://dictionaryapi.com/api/v3/references/collegiate/json/${playedWordPlayer}?key=${process.env.API_KEY}`)
+            playedTilesPlayer.push('')
         }
+    }
+
+    let playedLetters = []
+    //if there is a square that has a letter on the square before it and a letter on the square after it, display no spaces error message
+    if (checkForIllegalSpaces() === true) {
+        updateMessage(spaceBetweenLettersError, goBackButton)
+        document.getElementById('goBack').addEventListener('click', backToTurnScreen)    
+    }
+    //if there are no letters, display no letters error message
+    else if (playedTilesPlayer.every(el => el === '')) {
+        updateMessage(noLettersPlayedError, goBackButton)
+        document.getElementById('goBack').addEventListener('click', backToTurnScreen)
+    }
+    else {
+        //clear interval
+        clearInterval(interval)
+        timer = START_TIME
+        //remove empty strings
+        playedLetters = playedTilesPlayer.filter(el => el !== '')
+        //convert to string - save to variable 
+        playedWordPlayer = playedLetters.join('')
+        //add played word string to api URL
+        apiURL = `https://dictionaryapi.com/api/v3/references/collegiate/json/${playedWordPlayer}?key=${process.env.API_KEY}`
+
+        //Fetch the API using update URL
+        fetchAPI(apiURL)
+    }
         
-        //set value of playedWordPlayer back to global playedWord P1 or P2
-        if (player === 1) {
-            playedWordP1 = playedWordPlayer
-        }
-        else {
-            playedWordP2 = playedWordPlayer
-        }
-        
+    //set value of playedWordPlayer back to global playedWordP1 or P2 to be used at results for displaying played word for each player
+    if (player === 1) {
+        playedWordP1 = playedWordPlayer
+    }
+    else {
+        playedWordP2 = playedWordPlayer
+    }
 
 }
 
-const correctWord = () => {
+const correctWord = (player) => {
+
+    //play sound
+    document.getElementById('correct-word-sound').play()
 
     //tally points in played tiles array and save in global variable for comparing at results
     let total = 0
@@ -213,7 +208,6 @@ const correctWord = () => {
         total += object.points
     })
     playerScore = total
-
 
     //update message to correct word message with button to pass to next player
     addCurrentPlayer(currentPlayer)
@@ -236,6 +230,9 @@ const correctWord = () => {
 
 
 const incorrectWord = () => {
+    //play sound
+    document.getElementById('incorrect-word-sound').play()
+
     //set playerscore to 0
     playerScore = 0
 
@@ -249,24 +246,31 @@ const incorrectWord = () => {
     if (currentPlayer === 1) {
         //add event listener on next player button, on click function nextPlayerScreen
         document.getElementById('next-player-btn').addEventListener('click', nextPlayerScreen)
+        
+        //set score to player 1 score for showing at results
         player1Score = playerScore
     }
     else {
+        //otherwise show results if player 2
         document.getElementById('next-player-btn').addEventListener('click', showResults)
+        
+        //set score to player 2 score for showing at results
         player2Score = playerScore
     }
 }
 
+//interstitial for moving from player 1 to player 2
 const nextPlayerScreen = () => {
-    //clear interval
+    //clear interval and reset
     clearInterval(interval)
     interval = ''
     timer = START_TIME
+    TIMER_ON_SCOREBOARD.style.color = 'black'
     
+    //increment currentplayer
     currentPlayer += 1
 
-    //hide scoreboard
-    //update scoreboard to Player 2
+    //update scoreboard to Player 2 & hide
     showHideElement(SCORE_BOARD, 'hide')
 
     //*** DRY CODE UPDATE: create CSS class and make this one line
@@ -284,7 +288,7 @@ const nextPlayerScreen = () => {
     //reset tiles
     resetTiles()
 
-    //showHideElement on each tile to hide
+    //hide tiles
     hideTiles()
 
     //update message board with playerReady message and playerReadyButton
@@ -296,8 +300,6 @@ const nextPlayerScreen = () => {
 }
 
 const showResults = () => {
-    //message that includes who won, each player's points and word played
-    populateResults(playedWordP1, playedWordP2)
 
     //hide message and game board
     showHideElement(GAME_MESSAGE_BOARD, 'hide')
@@ -305,18 +307,16 @@ const showResults = () => {
     //hide playerboard
     showHideElement(PLAYER_BOARD, 'hide')
 
-    //create new div element
+    //message that includes who won, each player's points and word played
+    populateResults(playedWordP1, playedWordP2)
     let resultsDiv = document.createElement('div')
     resultsDiv.innerHTML = resultsText
     resultsDiv.setAttribute('class', 'results')
     document.querySelector('main').appendChild(resultsDiv)
 
-    
     //play again button - on click goes back to start game
     refreshClick('start-over')
 }
 
 //add click event to quit button - go back to welcome
 refreshClick('quit-btn')
-
-

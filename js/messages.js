@@ -9,87 +9,86 @@ welcomeMessage = `
 <br>
 <button id="start-btn" class="smallbutton">Start Game</button>`
 
-
+//Messages & buttons that need to be updated with current player
 const addCurrentPlayer = (player) => {
 
-confirmPlayMessage = 
-`<h4>Player ${player}, are you ready to play this word?</h4>`
+    confirmPlayMessage = 
+    `<h4>Player ${player}, are you ready to play this word?</h4>`
 
-
-if (playerScore === 1) {
-    correctWordMessage = `
-        <h4>Nice job!</h4>
-        <h5>That's ${playerScore} point!</h5>
-        <br>`
-}
-else {
-    correctWordMessage = `
-        <h4>Nice job!</h4>
-        <h5>That's ${playerScore} points!</h5>
-        <br>`
-}
+    //points message should say points unless it is just 1 point
+    if (playerScore === 1) {
+        correctWordMessage = `
+            <h4>Nice job!</h4>
+            <h5>That's ${playerScore} point!</h5>
+            <br>`
+    }
+    else {
+        correctWordMessage = `
+            <h4>Nice job!</h4>
+            <h5>That's ${playerScore} points!</h5>
+            <br>`
+    }
     
-incorrectWordMessage = `<h4>Sorry, Player ${player}, that's not a word!</h4>`
+    incorrectWordMessage = `<h4>Sorry, Player ${player}, that's not a word!</h4>`
 
-playerReadyMessage = `
-    <h4>Player ${player}, you're up!</h4>
-    <p>When you’re ready, click below to see your tiles and start the ${START_TIME} second timer:</p>
-    <br>`
-
-playerReadyButton = `<button id="player-ready-btn" class='bigbutton'>Player ${player} Ready</button>`
-
-
-timesUpMessage = `<h4>Argh! Time's up! Sorry, Player ${player}</h4>`
-
-
-yesNoButtons = `
-    <button id='yes' class='smallbutton'>Yes</button>
-    <button id='no' class='smallbutton'>No</button>`
-
-
-
-if (player === 1) {
-   
-    playerPlayMessage = `
+    playerReadyMessage = `
         <h4>Player ${player}, you're up!</h4>
-        <p>Drag & drop tiles onto the outlined board squares to create a word.</p>
-        <br>
-        <p>“Recall” brings all of your tiles back from the board.</p>
-        <br>
-        <p>Click “Play” when you're ready to play your word.</p>
-        <br>
-        <p>Or click "Pass" to pass your turn to Player ${player + 1}.</p>
+        <p>When you’re ready, click below to see your tiles and start the ${START_TIME} second timer:</p>
         <br>`
 
-    confirmPassMessage = `
-        <h5>Player ${player}, are you sure you want to pass to Player ${player + 1}?</h5>`
+    playerReadyButton = `<button id="player-ready-btn" class='bigbutton'>Player ${player} Ready</button>`
 
-    nextPlayerButton =
-        `<p>Click below when you are ready to pass to Player ${player + 1}</p>
-        <button id="next-player-btn" class="bigbutton">Pass to Player ${player + 1}</button>`
-} 
-else {
-    playerPlayMessage =`
-        <h4>Player ${player}, you're up!</h4>
-        <p>Drag & drop tiles onto the outlined board squares to create a word.</p>
-        <br>
-        <p>“Recall” brings all of your tiles back from the board.</p>
-        <br>
-        <p>Click “Play” when you're ready to play your word.</p>
-        <br>
-        <p>Or click "Pass" to pass your turn and we’ll see if Player ${player - 1} was able to come up with a word.</p>
-        <br>`
+    timesUpMessage = `<h4>Argh! Time's up! Sorry, Player ${player}</h4>`
 
-    confirmPassMessage = `
-        <h5>Player ${player}, are you sure you want to pass up your turn?</h5>`
+    yesNoButtons = `
+        <button id='yes' class='smallbutton'>Yes</button>
+        <button id='no' class='smallbutton'>No</button>`
+
+    //slight variations in messages based on which player, since player 1 will pass to 2 but player 2 will end the game
+    if (player === 1) {
     
-    nextPlayerButton =
-    `<button id="next-player-btn" class="bigbutton">See who won</button>`
+        playerPlayMessage = `
+            <h4>Player ${player}, you're up!</h4>
+            <p>Drag & drop tiles onto the highlighted board squares to create a word.</p>
+            <br>
+            <p>“Recall” brings all of your tiles back from the board.</p>
+            <br>
+            <p>Click “Play” when you're ready to play your word.</p>
+            <br>
+            <p>Or click "Pass" to pass your turn to Player ${player + 1}.</p>
+            <br>`
+
+        confirmPassMessage = `
+            <h5>Player ${player}, are you sure you want to pass to Player ${player + 1}?</h5>`
+
+        nextPlayerButton =
+            `<p>Click below when you are ready to pass to Player ${player + 1}</p>
+            <button id="next-player-btn" class="bigbutton">Pass to Player ${player + 1}</button>`
+    } 
+    else {
+        playerPlayMessage =`
+            <h4>Player ${player}, you're up!</h4>
+            <p>Drag & drop tiles onto the highlighted board squares to create a word.</p>
+            <br>
+            <p>“Recall” brings all of your tiles back from the board.</p>
+            <br>
+            <p>Click “Play” when you're ready to play your word.</p>
+            <br>
+            <p>Or click "Pass" to pass your turn and we’ll see if Player ${player - 1} was able to come up with a word.</p>
+            <br>`
+
+        confirmPassMessage = `
+            <h5>Player ${player}, are you sure you want to pass up your turn?</h5>`
+        
+        nextPlayerButton =
+        `<button id="next-player-btn" class="bigbutton">See who won</button>`
     }
 }
 
+//populate results message with player 1 and player 2 words
 const populateResults = (p1word, p2word) => {
 
+    //player 1 win
     if (player1Score > player2Score) {
         resultsText = `
         <h4>Player 1 wins!</h4>
@@ -106,6 +105,7 @@ const populateResults = (p1word, p2word) => {
         <br>
         `
     }
+    //player 2 win
     else if (player2Score > player1Score) {
         resultsText = `
         <h4>Player 2 wins!</h4>
@@ -121,6 +121,7 @@ const populateResults = (p1word, p2word) => {
         <button id = 'start-over' class = 'bigbutton'>Start a New Game</button>
         <br>`
     }
+    //tie
     else {
         resultsText = `
         <h4>It's a tie!</h4>
@@ -139,7 +140,6 @@ const populateResults = (p1word, p2word) => {
     }
     return resultsText
 }
-
 
 
 //ERROR MESSAGES

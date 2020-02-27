@@ -18,19 +18,6 @@ const updateMessage = (messageHTML, buttonHTML) => {
     }
 }
 
-const addGameButtonEventListeners = () => {
-    document.getElementById('play-btn').addEventListener('click', confirmPlay)
-    document.getElementById('recall-btn').addEventListener('click', recallTiles)
-    document.getElementById('pass-btn').addEventListener('click', confirmPass)
-}
-
-const removeGameButtonEventListeners = () => {
-    document.getElementById('play-btn').removeEventListener('click', confirmPlay)
-    document.getElementById('recall-btn').removeEventListener('click', recallTiles)
-    document.getElementById('pass-btn').removeEventListener('click', confirmPass)
-}
-
-
 let randomIndex
 let vowelIndices = [0, 4, 8, 14, 20]
 let randomVowel
@@ -127,59 +114,98 @@ const timerCountdown = () => {
     }
 }
 
+const addGameButtonEventListeners = () => {
+    PLAY_BUTTON.addEventListener('click', confirmPlay)
+    RECALL_BUTTON.addEventListener('click', recallTiles)
+    PASS_BUTTON.addEventListener('click', confirmPass)
 
-const recallTiles = () => {    
-    resetTiles()
-    playerTurn()
+    //reapply css if not already there
+    PLAY_BUTTON.setAttribute('class', 'smallbutton')
+    RECALL_BUTTON.setAttribute('class', 'smallbutton')
+    PASS_BUTTON.setAttribute('class', 'smallbutton')
+}
+
+const removeGameButtonEventListeners = () => {
+    PLAY_BUTTON.removeEventListener('click', confirmPlay)
+    RECALL_BUTTON.removeEventListener('click', recallTiles)
+    PASS_BUTTON.removeEventListener('click', confirmPass)
+
+    //gray out and remove hover/click styles
+    PLAY_BUTTON.setAttribute('class', 'smallbutton-disable')
+    RECALL_BUTTON.setAttribute('class', 'smallbutton-disable')
+    PASS_BUTTON.setAttribute('class', 'smallbutton-disable')
+}
+
+const updateScoreBoard = () => {
+    document.getElementById(`p${currentPlayer}-scoreboard`).textContent = `Player ${currentPlayer}`
+    document.getElementById(`p${currentPlayer}-scoreboard`).style.background = "#E14658"
+    document.getElementById(`p${currentPlayer}-scoreboard`).style.color = "white"
+    document.getElementById(`p${currentPlayer}-scoreboard`).style.display = "inline-block"
+    document.getElementById(`p${currentPlayer}-scoreboard`).style.padding = "1px"
+}
+
+const highlightPlayableSquares = () => {
+    for (let i = 11; i < 16; i++){
+        document.getElementById(`square${i}`).style.background = "#CAEBF2"
+    }
 }
 
 const resetTiles = () => {
-    //clear game and tile board
-    
-        //clear tiles from gameboard
-        for (let i = 10; i < GAME_BOARD_DIV_NODES.length-10; i++) {
-            if (GAME_BOARD_DIV_NODES[i].hasChildNodes()) {
-                GAME_BOARD_DIV_NODES[i].removeChild(document.querySelector('img'))
-            }
-        }
 
-        //clear tiles from tileboard
-        for (let i = 0; i < TILE_BOARD_DIV_NODES.length; i++) {
-            if (TILE_BOARD_DIV_NODES[i].hasChildNodes()) {
-                TILE_BOARD_DIV_NODES[i].removeChild(document.querySelector('img'))
-            }
+    //clear tiles from gameboard
+    for (let i = 10; i < GAME_BOARD_DIV_NODES.length-10; i++) {
+        if (GAME_BOARD_DIV_NODES[i].hasChildNodes()) {
+            GAME_BOARD_DIV_NODES[i].removeChild(document.querySelector('img'))
         }
+    }
 
-        //add tiles in tile board
-        createPlayerTiles()
-    
+    //clear tiles from tileboard
+    for (let i = 0; i < TILE_BOARD_DIV_NODES.length; i++) {
+        if (TILE_BOARD_DIV_NODES[i].hasChildNodes()) {
+            TILE_BOARD_DIV_NODES[i].removeChild(document.querySelector('img'))
+        }
+    }
+
+    //add tiles in tile board
+    createPlayerTiles()
+
 }
 
 const backToTurnScreen = () => {
     recallTiles()
     addCurrentPlayer(currentPlayer)
     updateMessage(playerPlayMessage)
+
     addGameButtonEventListeners()
 }
 
 //set up for drag & drop functions -- draggable attributes on tiles, droppable attributes on game squares
 
-//when drag begins, set data being transfered to be the img src
+//when drag begins, set data being transfered to be the img id
 const drag = e => {
     e.dataTransfer.setData("text", e.target.id)
     e.dataTransfer.dropEffect = "move"
     e.target.style.border = '1px solid #E14658'
 
     //add drop attributes to parent element so another tile can be dropped in square if tile is moved out of it
-    //*** DRY CODE UPDATE: string together
-    e.path[0].parentNode.style.background = "#EFEFEF"
+    e.path[0].parentNode.style.background = "#CAEBF2"
     e.path[0].parentNode.setAttribute('ondragover', 'allowDrop(event)')
     e.path[0].parentNode.setAttribute('ondrop', 'drop(event)')
     e.path[0].parentNode.setAttribute('ondragenter', 'dragEnter(event)')
     e.path[0].parentNode.setAttribute('ondragleave', 'dragLeave(event)')
 }
 
-//remove border when drag ends
+//set square background when something dragged over
+const dragEnter = e => {
+    e.target.style.background = "#E14658"
+}
+
+//set square background back when draggable element moves on and doesnt drop
+const dragLeave = e => {
+    e.target.style.background = "#CAEBF2"
+}
+
+//remove border on tile when drag ends
 const dragEnd = e => {
     e.target.style.border = ''
 }
@@ -192,20 +218,15 @@ const allowDrop = e => {
 }
 }
 
-//change droppable element background when element dragged over
-const dragEnter = e => {
-    e.target.style.background = "#E14658"
-}
-
-//change droppable element background back to original if element drags out
-const dragLeave = e => {
-    e.target.style.background = "#EFEFEF"
-}
-
 //when dropped:
 const drop = e => {
-    //change droppable element background back to regular background for if dropped element is moved again
-    e.target.style.background = "#EFEFEF"
+
+
+    //change background back to blue
+    e.target.style.background = "#CAEBF2"
+
+    //play click sound
+    document.getElementById('drop-sound').play()
     
     //can only drop if there is not already a tile image there
     if (!e.target.contains(document.querySelector('img'))) {
@@ -217,14 +238,15 @@ const drop = e => {
         let data = e.dataTransfer.getData("text")
 
         //append the draggable element's data to the droppable element
+        
+        if (e.target !== document.getElementById(data)) {
         e.target.appendChild(document.getElementById(data))
-
-        //***DRY CODE UPDATE: set css class, make one line
         document.getElementById(data).style.height = "100%"
         document.getElementById(data).style.width = "100%"
         document.getElementById(data).style.border = ''
+        }
 
-        //remove attribute that allow drops
+        //remove attribute to allow drops
         e.target.setAttribute('ondrop', '')
     }
 }
@@ -240,40 +262,13 @@ const dragDropSetup = () => {
         currentTile.setAttribute('ondragend', 'dragEnd(event)')
         
     }
-    //add attributes to squares to allow a drop and tell it what to do when something is dropped on it
-    //*** DRY CODE UPDATE: once creation of divs is updated and ids are loopable, loop here to cull down code
-    document.getElementById('3a').setAttribute('ondragover', 'allowDrop(event)')
-    document.getElementById('3b').setAttribute('ondragover', 'allowDrop(event)')
-    document.getElementById('3c').setAttribute('ondragover', 'allowDrop(event)')
-    document.getElementById('3d').setAttribute('ondragover', 'allowDrop(event)')
-    document.getElementById('3e').setAttribute('ondragover', 'allowDrop(event)')
-    
-    document.getElementById('3a').setAttribute('ondrop', 'drop(event)')
-    document.getElementById('3b').setAttribute('ondrop', 'drop(event)')
-    document.getElementById('3c').setAttribute('ondrop', 'drop(event)')
-    document.getElementById('3d').setAttribute('ondrop', 'drop(event)')
-    document.getElementById('3e').setAttribute('ondrop', 'drop(event)')
-
-    document.getElementById('3a').setAttribute('ondragenter', 'dragEnter(event)')
-    document.getElementById('3b').setAttribute('ondragenter', 'dragEnter(event)')
-    document.getElementById('3c').setAttribute('ondragenter', 'dragEnter(event)')
-    document.getElementById('3d').setAttribute('ondragenter', 'dragEnter(event)')
-    document.getElementById('3e').setAttribute('ondragenter', 'dragEnter(event)')
-
-    document.getElementById('3a').setAttribute('ondragleave', 'dragLeave(event)')
-    document.getElementById('3b').setAttribute('ondragleave', 'dragLeave(event)')
-    document.getElementById('3c').setAttribute('ondragleave', 'dragLeave(event)')
-    document.getElementById('3d').setAttribute('ondragleave', 'dragLeave(event)')
-    document.getElementById('3e').setAttribute('ondragleave', 'dragLeave(event)')
-
-    //add attributes to tileboard divs to allow a drop etc. so that if they drag a tile and then drop it back it will not give error and will reset tile border
-    //*** DRY CODE UPDATE: string together
-    for (let i=0; i < TILE_BOARD.length; i++) {
-        let currentTileboardDiv = document.querySelector(`#tileboard .tile${i}`)
-        currentTileboardDiv.setAttribute('ondragover', 'allowDrop(event)')
-        currentTileboardDiv.setAttribute('ondrop', 'drop(event)')
-        currentTileboardDiv.setAttribute('ondragenter', 'dragEnter(event)')
-        currentTileboardDiv.setAttribute('ondragleave', 'dragLeave(event)')
+    //add attributes to squares to allow a drop, tell it what to do when something is dragged over it and when something is dropped on it
+    for (let i = 11; i < 16; i++) {
+        let currentSquare = document.getElementById(`square${i}`)
+        currentSquare.setAttribute('ondragover', 'allowDrop(event)')
+        currentSquare.setAttribute('ondrop', 'drop(event)')
+        currentSquare.setAttribute('ondragenter', 'dragEnter(event)')
+        currentSquare.setAttribute('ondragleave', 'dragLeave(event)')
     }
 }
 
@@ -289,7 +284,6 @@ const dragDropOff = () => {
     }
 }
 
-
 const checkForIllegalSpaces = () => {
     for (let i = 0; i < playedTilesPlayer.length; i++) {
         //if playedTilesPlayer[i] is an empty string AND playedTilesPlayer[i-1] has a letter AND playedTilesPlayer[i+1] or i+2 or i+3 has a letter
@@ -299,20 +293,21 @@ const checkForIllegalSpaces = () => {
     }
 }
 
-//REAL API
-
+//FETCH API
 const fetchAPI = (url) => {
     
     fetch(url)
     .then(response => response.json())
     .then(data => {
 
-     if(data[0].meta) {  //if fetch returns an array whose first index is an object called meta, it's true and should move to correctword function
-        correctWord()
-       }
-       else {  //else it is false and should move to incorrect word (if not a word, data comes back just 1 single array of words that are similar to the input word)
-        incorrectWord()
-       }
+        if(data[0].meta && data[0].fl != "abbreviation" && data[0].fl != "biographical name") {  //if fetch returns an array whose first index is an object called meta, it's true and should move to correctword function
+        
+            correctWord()
+        }
+        else {  //else it is false and should move to incorrect word (if not a word, data comes back just 1 single array of words that are similar to the input word)
+            
+            incorrectWord()
+        }
     })
     .catch(err => {
         console.log('error', err)
