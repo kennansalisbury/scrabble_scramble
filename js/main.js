@@ -3,7 +3,7 @@ updateMessage(welcomeMessage)
 //**** DRY CODE UPDATE: for functions, decide if passing in player arg and make consistent
 
 const startGame = () => {
-
+    
     //show headers
     showHideElement(document.querySelector('header'), 'show')
 
@@ -181,7 +181,8 @@ const playTiles = (player) => {
         //convert to string - save to variable 
         playedWordPlayer = playedLetters.join('')
         //add played word string to api URL
-        apiURL = `https://dictionaryapi.com/api/v3/references/collegiate/json/${playedWordPlayer}?key=${process.env.API_KEY}`
+        apiURL = `https://dictionaryapi.com/api/v3/references/collegiate/json/${playedWordPlayer}?key=7cb66aa0-7487-4666-92aa-393636fd82d9`
+        // apiURL = `https://dictionaryapi.com/api/v3/references/collegiate/json/${playedWordPlayer}?key=${process.env.API_KEY}`
 
         //Fetch the API using update URL
         fetchAPI(apiURL)

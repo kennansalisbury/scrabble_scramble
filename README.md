@@ -25,7 +25,7 @@ Once both players have played, the game will reveal who won - including the word
 
 
 ## TECHNOLOGIES USED
-HTML, Materialize, CSS, JavaScript
+HTML, CSS, Materialize, JavaScript
 
 
 HTML was used for the basic structure, which is mostly empty containers to be utilized by the JavaScript DOM manipulation. 
@@ -46,32 +46,13 @@ Drag & Drop functionality was also implemented using a mix of HTML and Javascrip
 
 * https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API
 
-## APPROACH
 
-Created WireFrames
-![wireframe_img](./wireframes/wireframe_img.png)
+## 2.0 Updates
 
-### Created Trello Board
-Included lists for:
-* All requirements
-* To Dos for each day until the end of project week
-* Stretch goals
+1. Additional parameters to the dictionary API for stricter word-checking.
 
-And added to it as new requirements and needs arose.
+3. Additional parameters for randomizing the tiles, and possibly add more tiles to the player board, to ensure more consistency in the random tiles providing well-known word options.
 
-![trello_img](./wireframes/trello_img.png)
+4. Keep track of scores over multiple games.
 
-I tackled execution in the following order:
-* Set up initial structure of the game board and the surrounding elements (i.e. message board, scoreboard, tileboard and game buttons) using HTML & CSS.
-* Researched Dictionary APIs and Drag & Drop functionality resources - to confirm these would be a doable part of my project.
-* Added high level pseudocode/comments into my Javascript files for the initial flow of the game.
-* Worked through logic step by step as the player would go through the game
-* Added timer interval and sounds at the end once game was playable
-* Worked on DRY-ing my code as much as possible
-
-
-## UNSOLVED PROBLEMS
-
-I would like to eventually create a final product that functions more like a Scrabble game, where players have multiple turns and play off of each other's tiles until tiles are depleted. What I realized would be too much for me to figure out in 1 week is the logic behind reading what tiles have been played in the context of the board and tiles around them - horizontally and vertically.
-
-I also think the dictionary API needs a few more parameters than I set because it allows a lot of things through that aren't necessarily standard words. I removed abbreivations and names, but eventually would like to tighten this even more.
+5. Option to play against the computer.
